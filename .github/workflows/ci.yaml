@@ -1,0 +1,70 @@
+name: CI
+on: [push]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v2
+      - name: Node setup
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Modules caching
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Modules installation
+        run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
+      - name: Compiling
+        run: yarn build
+      - name: Action validate
+        uses: ./
+        with:
+          db_connection_env_var: MONGO_CONNECTION_STRING
+          db_connection2_env_var: MONGO_CONNECTION_STRING_ANALYTICS
+          mongodb_version: '4.4.6'
+          run_command: "yarn ci:validate"
+  build:
+    if: github.githubActionRepository == ''
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Code checkout
+        uses: actions/checkout@v2
+      - name: Node setup
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Modules caching
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+      - name: Modules installation
+        run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
+      - name: Formatting
+        run: yarn format
+      - name: Linting
+        run: yarn lint
+      - name: Compiling
+        run: yarn build
+      - name: Packaging
+        run: yarn package
+      - name: Tagging
+        if: github.ref == 'refs/heads/main'
+        uses: endbug/add-and-commit@v7
+        with:
+          add: bin
+          author_email: jeffrey.dugas@neofinancial.com
+          author_name: Neo Financial Engineering
+          push: true
+          signoff: true
+          tag: 'v1.0.0 --force'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
