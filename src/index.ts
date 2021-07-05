@@ -44,9 +44,6 @@ const testServer = async (memoryServer: MongoMemoryServer): Promise<MongoMemoryS
   try {
     await client.connect();
     console.log(`Client connected: ${client.isConnected()}`);
-
-    // const instanceInfo = memoryServer.getInstanceInfo();
-    // console.log(JSON.stringify(instanceInfo, null, 2))
   } catch (err) {
     core.setFailed(err.message);
 
