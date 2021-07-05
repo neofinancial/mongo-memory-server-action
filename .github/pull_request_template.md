@@ -1,6 +1,4 @@
-### Description of changes
-
-> Add a list of changes.
+> Add a list of changes
 
 ### Related PRs
 
