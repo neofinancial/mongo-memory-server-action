@@ -1,0 +1,14 @@
+# Dependency directory
+# NOTE: don't exclude bin or it will be unavailable for the CI action
+node_modules
+package-lock.json
+
+# Editors
+.vscode
+
+# OS metadata
+.DS_Store
+Thumbs.db
+
+# typedoc - for now
+docs

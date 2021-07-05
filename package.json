@@ -1,0 +1,33 @@
+{
+  "name": "action-repo",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "repository": "git@github.com:jeffrey-dugas-neo/action-repo.git",
+  "author": "Jeffrey Dugas <jeffrey.dugas@neofinancial.com>",
+  "scripts": {
+    "build": "tsc",
+    "package": "NODE_ENV=production ncc build -o bin --minify",
+    "lint": "eslint \"**/*.{ts,js}\"",
+    "doc": "npx typedoc src/index.ts",
+    "ci:validate": "node bin/validate.js"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0",
+    "@types/mongodb": "^3.6.19",
+    "@types/node": "^15.12.5",
+    "@vercel/ncc": "^0.28.6",
+    "eslint": "^7.29.0",
+    "eslint-config-neo": "^0.6.2",
+    "jest": "^27.0.6",
+    "mongodb": "^3.6.9",
+    "mongodb-memory-server-core": "^7.0.0",
+    "mongodb-memory-server-global": "^7.0.0",
+    "prettier": "^2.3.2",
+    "ts-node": "^10.0.0",
+    "typedoc": "^0.21.2",
+    "typescript": "^4.3.5"
+  }
+}
