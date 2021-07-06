@@ -23,7 +23,7 @@ jobs:
         run: yarn build
       - name: Testing
         run: yarn test
-      - name: Action validate
+      - name: Validating
         uses: ./
         with:
           db_connection_env_var: MONGO_CONNECTION_STRING

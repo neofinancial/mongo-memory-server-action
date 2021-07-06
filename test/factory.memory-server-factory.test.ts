@@ -11,6 +11,7 @@ const expectedVersion = '4.4.6';
 
 describe('MemoryServerFactory', () => {
   beforeAll(async () => {
+    jest.setTimeout(30000);
     server = await MemoryServerFactory.generateMemoryServer(
       expectedDbName,
       expectedPort,
