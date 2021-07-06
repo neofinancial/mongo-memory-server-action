@@ -2,7 +2,7 @@ import * as core from '@actions/core';
 import { MongoClient } from 'mongodb';
 
 async function runTest(): Promise<void> {
-  console.log('Testing connectivity via MongoClient- validate');
+  console.log('Testing connectivity via MongoClient - validate');
 
   const connectionString = process.env['MONGO_CONNECTION_STRING'] as string;
   const client = new MongoClient(connectionString, { useUnifiedTopology: true });

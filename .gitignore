@@ -1,5 +1,6 @@
-# Dependency directory
+# Specific directories (code coverage, dependencies, etc.)
 # NOTE: don't exclude build or it will be unavailable for the CI action
+coverage
 node_modules
 package-lock.json
 
@@ -12,3 +13,6 @@ Thumbs.db
 
 # typedoc - for now
 docs
+
+# most logs
+**/*.log

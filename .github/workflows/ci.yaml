@@ -21,14 +21,18 @@ jobs:
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: Compiling
         run: yarn build
+      - name: Testing
+        run: yarn test
       - name: Action validate
         uses: ./
         with:
           db_connection_env_var: MONGO_CONNECTION_STRING
           run_command: yarn ci:validate
-          binary_version: '4.4.6'
-          # instance_dbName: 'validation'
-          instance_port: '27017'
+          binary_version: 4.4.6
+          instance_dbName: validation
+          instance_port: 27018
+          instance_storageEngine: wiredTiger
+          mongoms_debug: 1
   build:
     if: github.githubActionRepository == ''
     needs: validate
