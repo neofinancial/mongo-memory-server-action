@@ -11,7 +11,6 @@ async function generateMemoryServer(): Promise<MongoMemoryServer> {
 
   const instanceOpts: MongoMemoryInstanceOpts = {
     storageEngine: 'wiredTiger',
-    // args: ['--retryWrites'],
   };
   const dbName = core.getInput('instance_dbName');
   const port: number = Number.parseInt(core.getInput('instance_port'));
@@ -68,7 +67,7 @@ async function verifyMemoryServer(server: MongoMemoryServer): Promise<string> {
   }
 }
 
-async function runCommand(command: string, connectionString: string): Promise<void> {
+async function runCommand(command: string, connectionString: string): Promise<string> {
   console.log(`Executing the target script: "${command}"`);
 
   const connectionStringEnvVar = core.getInput('db_connection_env_var');
@@ -79,7 +78,8 @@ async function runCommand(command: string, connectionString: string): Promise<vo
 
   try {
     stdOut = execSync(command, { env: process.env, cwd: process.env.githubRepository }).toString();
-    console.info(`stdout: ${stdOut}`);
+
+    return stdOut;
   } catch (err) {
     console.error(err);
 
@@ -96,7 +96,9 @@ async function run(): Promise<void> {
     const connectionString = await verifyMemoryServer(mongodb);
     const command = core.getInput('run_command');
 
-    runCommand(command, connectionString);
+    const commandStdOut = await runCommand(command, connectionString);
+
+    console.info(`stdout: ${commandStdOut}`);
   } catch (err) {
     core.setFailed(err.message);
   } finally {
