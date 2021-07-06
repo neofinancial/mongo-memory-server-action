@@ -67,19 +67,15 @@ async function verifyMemoryServer(server: MongoMemoryServer): Promise<string> {
   }
 }
 
-async function runCommand(command: string, connectionString: string): Promise<string> {
+async function runCommand(command: string, connectionString: string): Promise<void> {
   console.log(`Executing the target script: "${command}"`);
 
   const connectionStringEnvVar = core.getInput('db_connection_env_var');
 
   process.env[connectionStringEnvVar] = connectionString;
 
-  let stdOut: string;
-
   try {
-    stdOut = execSync(command, { env: process.env, cwd: process.env.githubRepository }).toString();
-
-    return stdOut;
+    execSync(command, { env: process.env, cwd: process.env.githubRepository }).toString();
   } catch (err) {
     console.error(err);
 
@@ -96,14 +92,12 @@ async function run(): Promise<void> {
     const connectionString = await verifyMemoryServer(mongodb);
     const command = core.getInput('run_command');
 
-    const commandStdOut = await runCommand(command, connectionString);
-
-    console.info(`stdout: ${commandStdOut}`);
+    await runCommand(command, connectionString);
   } catch (err) {
     core.setFailed(err.message);
   } finally {
     if (mongodb?.state === MongoMemoryServerStates.running) {
-      mongodb.stop;
+      await mongodb.stop();
     }
   }
 }
