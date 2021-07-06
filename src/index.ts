@@ -6,7 +6,7 @@ import { execSync } from 'child_process';
 import { MemoryServerFactory } from './factory/memory-server-factory';
 
 async function runCommand(command: string, connectionString: string): Promise<void> {
-  console.log(`Executing the target script: "${command}"`);
+  console.info(`Executing the target script: "${command}"`);
 
   const connectionStringEnvVar = core.getInput('db_connection_env_var');
   const mongoMsDebug = core.getInput('mongoms_debug');

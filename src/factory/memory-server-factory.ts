@@ -45,8 +45,6 @@ export class MemoryServerFactory {
     try {
       const memoryServerUri = server.getUri();
 
-      console.info(`Connection string: ${memoryServerUri}`);
-
       client = new MongoClient(memoryServerUri, { useUnifiedTopology: true, useNewUrlParser: true });
 
       await client.connect();
