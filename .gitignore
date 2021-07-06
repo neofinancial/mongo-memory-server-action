@@ -1,5 +1,5 @@
 # Dependency directory
-# NOTE: don't exclude bin or it will be unavailable for the CI action
+# NOTE: don't exclude build or it will be unavailable for the CI action
 node_modules
 package-lock.json
 

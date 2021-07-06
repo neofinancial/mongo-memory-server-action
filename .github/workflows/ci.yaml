@@ -25,9 +25,9 @@ jobs:
         uses: ./
         with:
           db_connection_env_var: MONGO_CONNECTION_STRING
-          db_connection2_env_var: MONGO_CONNECTION_STRING_ANALYTICS
-          mongodb_version: '4.4.6'
-          run_command: "yarn ci:validate"
+          run_command: yarn ci:validate
+          binary_version: '4.4.6'
+          instance_dbName: validation
   build:
     if: github.githubActionRepository == ''
     needs: validate
@@ -60,7 +60,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: endbug/add-and-commit@v7
         with:
-          add: bin
+          add: build
           author_email: jeffrey.dugas@neofinancial.com
           author_name: Neo Financial Engineering
           push: true

@@ -14,10 +14,9 @@ In your .github/workflows folder, add a new job step to the appropriate workflow
           db_connection_env_var: MONGO_CONNECTION_STRING
           run_command: yarn seed:database
           mongodb_version: '4.0.9' # optional
-          db_connection2_env_var: MONGO_CONNECTION_STRING_FOR_SECOND_CLIENT # optional
 ```
 
-- `db_connection_env_var` and `db_connection2_env_var` allow you to use a single instance of the database for client connections.
+- `db_connection_env_var` allowa you to use a single instance of the database for client connections.
 - `mongodb_version` allow you to specify a version of the [database engine](https://docs.mongodb.com/v5.0/release-notes/)
   - defaults to `4.0.25` as per the [mongo-memory-server library app defaults](https://github.com/nodkz/mongodb-memory-server/blob/345ecee52e9cc86028ac0510ab8dce55a896b13f/packages/mongodb-memory-server-core/src/util/resolveConfig.ts#L28)
 - `run_command` specifies the name of the shell command to execute once the database is available
@@ -33,7 +32,7 @@ The memory-server is stopped subsequent to the completion of your script.
 
 ### Testing
 
-This repository's CI workflow has a 'validate' job @ `src/validate.ts` (technically, `bin/validate.js`) for internal, CI-time testing of the action's functionality.
+This repository's CI workflow has a 'validate' job @ `src/validate.ts` (technically, `build/validate.js`) for internal, CI-time testing of the action's functionality.
 
 * please try to cover the intended capability when making small changes
 * consider executing any scripts that begin with `validate-` if additional use-cases are required
@@ -47,7 +46,7 @@ Semantic versioning should be applied via the CI workflow by updating the `tag` 
         if: github.ref == 'refs/heads/main'
         uses: endbug/add-and-commit@v7
         with:
-          add: bin
+          add: build
           author_email: jeffrey.dugas@neofinancial.com
           author_name: Neo Financial Engineering
           push: true

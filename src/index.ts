@@ -1,114 +1,109 @@
 import * as core from '@actions/core';
 import { MongoMemoryServer } from 'mongodb-memory-server-global';
 import { MongoBinaryOpts } from 'mongodb-memory-server-core/lib/util/MongoBinary';
-import { MongoMemoryServerOpts } from 'mongodb-memory-server-core/lib/MongoMemoryServer';
+import { MongoMemoryInstanceOpts } from 'mongodb-memory-server-core/lib/util/MongoInstance';
+import { MongoMemoryServerOpts, MongoMemoryServerStates } from 'mongodb-memory-server-core/lib/MongoMemoryServer';
 import { execSync } from 'child_process';
 import { MongoClient } from 'mongodb';
 
-/**
- * Promise to create a new mongodb memory server.
- */
-const createServer = async (): Promise<MongoMemoryServer> => {
+async function generateMemoryServer(): Promise<MongoMemoryServer> {
   console.log('Creating MongoMemoryServer instance');
 
-  const opts: MongoMemoryServerOpts = {
-    instance: {
-      storageEngine: 'wiredTiger',
-      port: 27017,
-    },
+  const instanceOpts: MongoMemoryInstanceOpts = {
+    storageEngine: 'wiredTiger',
+    args: ['--retryWrites'],
   };
+  const dbName = core.getInput('instance_dbName');
+  const port: number = Number.parseInt(core.getInput('instance_port'));
 
-  const mongodbVersion = core.getInput('mongodb_version');
-
-  if (mongodbVersion) {
-    const binaryOpts: MongoBinaryOpts = { version: mongodbVersion };
-
-    opts.binary = binaryOpts;
+  if (dbName || dbName !== '') {
+    instanceOpts.dbName = dbName;
   }
 
-  const mongoServer: MongoMemoryServer = await MongoMemoryServer.create(opts);
+  if (port) {
+    instanceOpts.port = port;
+  }
 
-  return mongoServer;
-};
+  const binaryOpts: MongoBinaryOpts = { checkMD5: true };
+  const version = core.getInput('binary_version');
 
-/**
- * Promise to test that server's general availability with a client connect/disconnect cycle.
- */
-const testServer = async (memoryServer: MongoMemoryServer): Promise<MongoMemoryServer> => {
+  if (version || version !== '') {
+    binaryOpts.version = version;
+  }
+
+  const opts: MongoMemoryServerOpts = {
+    instance: instanceOpts,
+    binary: binaryOpts,
+  };
+
+  const server: MongoMemoryServer = await MongoMemoryServer.create(opts);
+
+  return server;
+}
+
+async function verifyMemoryServer(server: MongoMemoryServer): Promise<string> {
   console.log('Testing connectivity to new MongoMemoryServer instance via MongoClient');
 
-  const memoryServerUri = memoryServer.getUri();
-  const connectionString = `${memoryServerUri}retryWrites=true`;
-  const client = new MongoClient(connectionString, { useUnifiedTopology: true });
+  let client: MongoClient | undefined;
 
   try {
+    const memoryServerUri = server.getUri();
+
+    client = new MongoClient(memoryServerUri, { useUnifiedTopology: true, useNewUrlParser: true });
+
     await client.connect();
-    console.log(`Client connected: ${client.isConnected()}`);
+    console.info(`Client connected: ${client.isConnected()}`);
+
+    return memoryServerUri;
   } catch (err) {
-    core.setFailed(err.message);
+    console.error(err);
 
     throw err;
   } finally {
-    await client.close();
+    if (client?.isConnected()) {
+      await client.close();
+    }
   }
+}
 
-  return memoryServer;
-};
+async function runCommand(command: string, connectionString: string): Promise<void> {
+  console.log(`Executing the target script: "${command}"`);
 
-/**
- * Promise to run the script configured by the Action using the process's environment,
- * after the corresponding ENV variables have been injected into the process.
- */
-const exerciseScript = async (memoryServer: MongoMemoryServer): Promise<MongoMemoryServer> => {
-  const commandString = core.getInput('run_command');
-
-  console.log(`Executing the target script: "${commandString}"`);
-
-  const memoryServerUri = await memoryServer.getUri();
   const connectionStringEnvVar = core.getInput('db_connection_env_var');
-  const connectionStringAnalyticsEnvVar = core.getInput('db_connection2_env_var');
-  const connectionString = `${memoryServerUri}retryWrites=true`;
 
-  process.env['MONGODB_SEED_AUTOMATION_ONLY'] = 'ExistenceMeansTrue';
   process.env[connectionStringEnvVar] = connectionString;
 
-  if (connectionStringAnalyticsEnvVar) {
-    process.env[connectionStringAnalyticsEnvVar] = connectionString;
-  }
-
-  let stdout: string;
+  let stdOut: string;
 
   try {
-    stdout = execSync(commandString, { env: process.env, cwd: process.env.githubRepository }).toString();
-
-    console.log(`stdout: ${stdout}`);
+    stdOut = execSync(command, { env: process.env, cwd: process.env.githubRepository }).toString();
+    console.info(`stdout: ${stdOut}`);
   } catch (err) {
-    core.setFailed(err.message);
+    console.error(err);
 
     throw err;
   }
+}
 
-  return memoryServer;
-};
+async function run(): Promise<void> {
+  let mongodb: MongoMemoryServer | undefined;
 
-/**
- * Promise to stop the mongodb memory server.
- */
-const stopServer = async (memoryServer: MongoMemoryServer): Promise<void> => {
-  console.log('Stopping MongoMemoryServer instance');
-  await memoryServer.stop();
-};
+  try {
+    mongodb = await generateMemoryServer();
 
-createServer()
-  .then((server) => {
-    return testServer(server);
-  })
-  .then((server) => {
-    return exerciseScript(server);
-  })
-  .then((server) => {
-    return stopServer(server);
-  })
-  .catch((err) => {
+    const connectionString = await verifyMemoryServer(mongodb);
+    const command = core.getInput('run_command');
+
+    runCommand(command, connectionString);
+  } catch (err) {
     core.setFailed(err.message);
-  });
+  } finally {
+    if (mongodb?.state === MongoMemoryServerStates.running) {
+      mongodb.stop;
+    }
+
+    console.info('Completed running command');
+  }
+}
+
+run();

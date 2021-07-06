@@ -1,17 +1,20 @@
 {
-  "name": "action-repo",
+  "name": "mongodb-ci-action",
   "description": "Support MongoDB-dependent GitHub Workflows",
   "version": "1.0.0",
-  "main": "src/index.ts",
-  "repository": "git@github.com:neofinancial/mongodb-ci-action.git",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:neofinancial/mongodb-ci-action.git"
+  },
   "author": "Neo Financial Engineering <engineering@neofinancial.com>",
+  "main": "build/index.js",
   "scripts": {
     "build": "tsc",
     "doc": "npx typedoc src/index.ts",
     "format": "prettier --write **/*.ts",
     "lint": "eslint \"**/*.{ts,js}\"",
-    "package": "NODE_ENV=production ncc build -o bin --minify",
-    "ci:validate": "node bin/validate.js"
+    "package": "NODE_ENV=production ncc build -o build --minify",
+    "ci:validate": "node build/validate.js"
   },
   "keywords": [
     "actions",
@@ -31,7 +34,7 @@
     "eslint-config-neo": "^0.6.2",
     "jest": "^27.0.6",
     "mongodb": "^3.6.9",
-    "mongodb-memory-server-core": "^7.0.0",
+    "mongodb-memory-server-core": "^7.1.0",
     "mongodb-memory-server-global": "^7.0.0",
     "prettier": "^2.3.2",
     "ts-node": "^10.0.0",
