@@ -12,10 +12,12 @@ async function generateMemoryServer(): Promise<MongoMemoryServer> {
   const instanceOpts: MongoMemoryInstanceOpts = {
     storageEngine: 'wiredTiger',
   };
+  const binaryOpts: MongoBinaryOpts = { checkMD5: true };
   const dbName = core.getInput('instance_dbName');
   const port: number = Number.parseInt(core.getInput('instance_port'));
+  const version = core.getInput('binary_version');
 
-  if (dbName || dbName !== '') {
+  if (dbName) {
     instanceOpts.dbName = dbName;
   }
 
@@ -23,10 +25,7 @@ async function generateMemoryServer(): Promise<MongoMemoryServer> {
     instanceOpts.port = port;
   }
 
-  const binaryOpts: MongoBinaryOpts = { checkMD5: true };
-  const version = core.getInput('binary_version');
-
-  if (version || version !== '') {
+  if (version) {
     binaryOpts.version = version;
   }
 
