@@ -11,7 +11,7 @@ async function generateMemoryServer(): Promise<MongoMemoryServer> {
 
   const instanceOpts: MongoMemoryInstanceOpts = {
     storageEngine: 'wiredTiger',
-    args: ['--retryWrites'],
+    // args: ['--retryWrites'],
   };
   const dbName = core.getInput('instance_dbName');
   const port: number = Number.parseInt(core.getInput('instance_port'));
@@ -48,6 +48,8 @@ async function verifyMemoryServer(server: MongoMemoryServer): Promise<string> {
 
   try {
     const memoryServerUri = server.getUri();
+
+    console.info(`Connection string: ${memoryServerUri}`);
 
     client = new MongoClient(memoryServerUri, { useUnifiedTopology: true, useNewUrlParser: true });
 
@@ -101,8 +103,6 @@ async function run(): Promise<void> {
     if (mongodb?.state === MongoMemoryServerStates.running) {
       mongodb.stop;
     }
-
-    console.info('Completed running command');
   }
 }
 

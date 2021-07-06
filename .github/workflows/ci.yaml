@@ -26,7 +26,7 @@ jobs:
         with:
           db_connection_env_var: MONGO_CONNECTION_STRING
           run_command: yarn ci:validate
-          binary_version: '4.4.6'
+          # binary_version: '4.4.6'
           instance_dbName: validation
   build:
     if: github.githubActionRepository == ''
