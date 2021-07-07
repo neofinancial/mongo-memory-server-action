@@ -3,66 +3,70 @@ on: [push]
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Code checkout
-        uses: actions/checkout@v2
-      - name: Node setup
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: 14
-      - name: Modules caching
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache node modules
         uses: actions/cache@v2
         with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-      - name: Modules installation
+            ${{ runner.os }}-yarn-
+      - name: Install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
-      - name: Compiling
+      - name: Lint
+        run: yarn lint
+      - name: Build
         run: yarn build
-      - name: Testing
+      - name: Test
         run: yarn test
-      - name: Validating
+      - name: Validate
         uses: ./
         with:
-          db_connection_env_var: MONGO_CONNECTION_STRING
-          run_command: yarn ci:validate
-          binary_version: 4.4.6
-          instance_dbName: validation
-          instance_port: 27018
-          instance_storageEngine: wiredTiger
-          mongoms_debug: 1
+          db-connection-env-var: MONGO_CONNECTION_STRING
+          run-command: yarn ci:validate
+          binary-version: 4.4.6
+          instance-dbName: validation
+          instance-port: 27018
+          instance-storageEngine: wiredTiger
+          mongoms-debug: 1
   build:
     if: github.githubActionRepository == ''
     needs: validate
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
-      - name: Code checkout
-        uses: actions/checkout@v2
-      - name: Node setup
-        uses: actions/setup-node@v2
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
           node-version: 14
-      - name: Modules caching
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache node modules
         uses: actions/cache@v2
         with:
-          path: node_modules
-          key: ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
-            ${{ runner.os }}-${{ hashFiles('yarn.lock') }}
-      - name: Modules installation
+            ${{ runner.os }}-yarn-
+      - name: Install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
-      - name: Formatting
-        run: yarn format
-      - name: Linting
+      - name: Lint
         run: yarn lint
-      - name: Compiling
+      - name: Build
         run: yarn build
-      - name: Packaging
+      - name: Package
         run: yarn package
-      - name: Tagging
-        if: github.ref == 'refs/heads/main'
+      - name: Tag
+        if: github.ref == 'refs/heads/master'
         uses: endbug/add-and-commit@v7
         with:
           add: build
