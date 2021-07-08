@@ -11,8 +11,14 @@
     "outDir": "build",
     "baseUrl": ".",
     "paths": {
-      "*": ["*", "node_modules/*", "src/*"]
+      "*": [
+        "*",
+        "node_modules/*",
+        "src/*"
+      ]
     }
   },
-  "include": ["src/**/*"]
+  "include": [
+    "src/**/*"
+  ]
 }

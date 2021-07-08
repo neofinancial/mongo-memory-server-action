@@ -1,10 +1,10 @@
 {
-  "name": "mongodb-ci-action",
+  "name": "mongo-memory-server-action",
   "description": "Support MongoDB-dependent GitHub Workflows",
   "version": "1.0.0",
   "repository": {
     "type": "git",
-    "url": "git@github.com:neofinancial/mongodb-ci-action.git"
+    "url": "git@github.com:neofinancial/mongo-memory-server-action.git"
   },
   "author": "Neo Financial Engineering <engineering@neofinancial.com>",
   "main": "build/index.js",

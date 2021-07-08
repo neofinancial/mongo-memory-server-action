@@ -1,6 +1,6 @@
-# mongodb-ci-action
+# mongo-memory-server-action
 
-[![Build status](https://github.com/neofinancial/mongodb-ci-action/workflows/CI/badge.svg)](https://github.com/neofinancial/mongodb-ci-action/actions)
+[![Build status](https://github.com/neofinancial/mongo-memory-server-action/workflows/CI/badge.svg)](https://github.com/neofinancial/mongo-memory-server-action/actions)
 
 Provides a CI-time MongoDB memory database using [mongo-memory-server](https://github.com/nodkz/mongodb-memory-server), sets your specified environment variable to the new server's connection string, and executes your specified script. Created to support CI-time testing of database-seed scripts, but suitable for testing other MongoDB-dependent processes in favor of a full database mock.
 
@@ -9,7 +9,7 @@ Provides a CI-time MongoDB memory database using [mongo-memory-server](https://g
 In your .github/workflows folder, add a new job step to the appropriate workflow:
 
 ```yaml
-      - uses: neofinancial/mongodb-ci-action@v1.0.0
+      - uses: neofinancial/mongo-memory-server-action@v1.0.0
         with:
           db-connection-env-var: MONGO_CONNECTION_STRING
           run-command: yarn use:database
@@ -68,4 +68,4 @@ To bump the version as part of a pull request:
 
 - update the package.json "version"
 - update the `Tag` step of the "build" job in the CI workflow (.github/workflows/ci.yaml)
-- update this README to reference tha latest tag
+- update this README to reference the latest tag
