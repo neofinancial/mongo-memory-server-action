@@ -5,7 +5,7 @@ import { execSync } from 'child_process';
 
 import { MemoryServerFactory } from './factory/memory-server-factory';
 
-async function runCommand(command: string, connectionString: string): Promise<void> {
+async function runCommand(command: string, connectionString: string): Promise<string> {
   console.info(`Executing the target script: "${command}"`);
 
   const connectionStringEnvVar = core.getInput('db-connection-env-var');
@@ -18,7 +18,7 @@ async function runCommand(command: string, connectionString: string): Promise<vo
   }
 
   try {
-    execSync(command, { env: process.env, cwd: process.env.githubRepository }).toString();
+    return execSync(command, { env: process.env, cwd: process.env.githubRepository }).toString();
   } catch (err) {
     console.error(err);
 
@@ -40,7 +40,9 @@ async function run(): Promise<void> {
     const connectionString = await MemoryServerFactory.verifyMemoryServer(mongodb);
     const command = core.getInput('run-command');
 
-    await runCommand(command, connectionString);
+    const stdOut = await runCommand(command, connectionString);
+
+    console.info(stdOut);
   } catch (err) {
     core.setFailed(err.message);
   } finally {
