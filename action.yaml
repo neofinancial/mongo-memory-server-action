@@ -1,0 +1,33 @@
+name: MongoDB Memory Server Action
+description: Support db-seed testing via an in-memory storage MongoDB instance
+author: Neo Financial Engineering
+inputs:
+  db-connection-env-var:
+    description: |
+      The name of an ENV variable your MongoDB-dependent process will use for the connection string.
+      This action will inject this ENV variable into the process space of your run-command, using the
+      instantiated MongoDB server's 'uri' property.
+    required: true
+  run-command:
+    description: The command that initiates your MongoDB-dependent process.
+    required: true
+  instance-dbName:
+    description: The DB Name (defaults to a random name).
+    required: false
+  instance-port:
+    description: The DB Port (defaults to '27017').
+    required: false
+  instance-storageEngine:
+    description: |
+      The name of the storage engine to apply (defaults to 'ephemeralForTest'), with the alternate value 'wiredTiger'.
+    required: false
+  binary-version:
+    description: The version of MongoDB to install (defaults to 4.0.25).
+    required: false
+  mongoms-debug:
+    description: |
+      Enables a Debug mode for the in-memory storage MongoDB instance (any value supplied will be taken as 'true').
+    required: false
+runs:
+  using: 'node12'
+  main: 'build/index.js'
