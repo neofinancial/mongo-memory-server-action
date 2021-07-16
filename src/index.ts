@@ -14,7 +14,7 @@ async function runCommand(command: string, connectionString: string): Promise<st
   process.env[connectionStringEnvVar] = connectionString;
 
   if (mongoMsDebug) {
-    process.env['MONGOMS_DEBUG'] = '1';
+    process.env.MONGOMS_DEBUG = '1';
   }
 
   try {
