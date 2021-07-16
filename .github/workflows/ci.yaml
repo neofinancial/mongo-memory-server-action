@@ -24,10 +24,12 @@ jobs:
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
+      - name: ZIP dependencies
+        run: zip -r cache-node-modules.zip ${{ steps.yarn-cache.outputs.dir }}
       - uses: actions/upload-artifact@v2
         with:
           name: node-modules-artifact
-          path: ${{ steps.yarn-cache.outputs.dir }}
+          path: ./cache-node-modules.zip
 
   format-lint-build:
     needs: install-dependencies
@@ -42,16 +44,20 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-modules-artifact
+      - name: UNZIP dependencies
+        run: unzip ./cache-node-modules.zip -d ${{ steps.yarn-cache.outputs.dir }}
       - name: Format
         run: yarn format
       - name: Lint
         run: yarn lint
       - name: Build
         run: yarn build
+      - name: ZIP build
+        run: zip -r build.zip build
       - uses: actions/upload-artifact@v2
         with:
           name: build-artifact
-          path: build
+          path: ./build.zip
 
   unit-test:
     needs: install-dependencies
@@ -66,6 +72,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-modules-artifact
+      - name: UNZIP dependencies
+        run: unzip ./cache-node-modules.zip -d ${{ steps.yarn-cache.outputs.dir }}
       - name: Test
         run: yarn test
 
@@ -82,6 +90,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: node-modules-artifact
+      - name: UNZIP dependencies
+        run: unzip ./cache-node-modules.zip -d ${{ steps.yarn-cache.outputs.dir }}
       - name: Validate
         uses: ./
         with:
@@ -106,6 +116,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-artifact
+      - name: UNZIP build
+        run: unzip ./build.zip -d build
       - name: Package
         run: yarn package
       - name: Tag
