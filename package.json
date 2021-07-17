@@ -14,7 +14,7 @@
     "format": "prettier --write **/*.ts",
     "lint": "eslint \"**/*.{ts,js}\"",
     "package": "NODE_ENV=production ncc build -o build --minify",
-    "test": "jest  --coverage --detectOpenHandles --runInBand",
+    "test": "jest --coverage --detectOpenHandles --runInBand",
     "ci:validate": "node build/validate.js"
   },
   "keywords": [
