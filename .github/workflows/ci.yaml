@@ -10,9 +10,11 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
+# Assign a cache key
       - name: Get yarn cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
+# Get or Put cache @ check key path
       - name: Cache dependencies
         id: cache-node-modules
         uses: actions/cache@v2
@@ -21,13 +23,16 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+# Install if no cache hit @ cache key
       - name: Install dependencies
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
+# Zip the cache
       - name: ZIP dependencies
         run: |
           zip -r -q node_modules.zip ${{ steps.yarn-cache.outputs.dir }}
           echo ${{ steps.yarn-cache.outputs.dir }}
+# Upload the cache zip
       - uses: actions/upload-artifact@v2
         with:
           name: node-modules-artifact
@@ -42,19 +47,11 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      - name: Download dependencies
-        uses: actions/download-artifact@v2
-        with:
-          name: node-modules-artifact
+# Assign a cache key
       - name: Get yarn cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      - name: UNZIP dependencies
-        run: |
-          echo $(yarn cache dir)
-          mkdir tmp
-          unzip -o -q ./node_modules.zip -d ./tmp
-          mv ./tmp/* $(yarn cache dir)
+# Get or Put cache @ check key path
       - name: Cache dependencies
         id: cache-node-modules
         uses: actions/cache@v2
@@ -63,7 +60,23 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+# Download if no cache hit @ cache key
+      - name: Download dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        uses: actions/download-artifact@v2
+        with:
+          name: node-modules-artifact
+# UnZip the cache if no cache hit @ cache key
+      - name: UNZIP dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: |
+          echo $(yarn cache dir)
+          mkdir tmp
+          unzip -o -q ./node_modules.zip -d ./tmp
+          mv ./tmp/* $(yarn cache dir)
+# Install if no cache hit @ cache key
       - name: Install
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: Format
         run: yarn format
