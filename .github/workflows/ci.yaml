@@ -33,7 +33,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.modules-cache.outputs.dir }}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/node_modules') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-modules-
 # # Zip the cache if none found
@@ -78,7 +78,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ${{ steps.modules-cache.outputs.dir }}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/node_modules') }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-modules-
       - name: Install dependencies
