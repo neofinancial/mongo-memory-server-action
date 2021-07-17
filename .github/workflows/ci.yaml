@@ -48,10 +48,10 @@ jobs:
           name: node-modules-artifact
       - name: UNZIP dependencies
         run: |
-          echo ${{ steps.yarn-cache.outputs.dir }}
+          echo $(yarn cache dir)
           mkdir tmp
           unzip -o -q ./node_modules.zip -d ./tmp
-          mv ./tmp/*/* ${{ steps.yarn-cache.outputs.dir }}
+          mv ./tmp/* $(yarn cache dir)
       - name: Install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: Format
