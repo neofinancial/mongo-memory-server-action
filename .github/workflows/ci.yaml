@@ -1,5 +1,7 @@
 name: CI
 on: [push]
+env:
+  CI_CACHE_MODULES: true
 jobs:
 
   install-dependencies:
@@ -14,10 +16,6 @@ jobs:
       - name: Set cache key -> yarn
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      # assign modules cache key
-      - name: Set cache key -> node_modules
-        id: modules-cache
-        run: echo "::set-output name=dir::node_modules"
       # get/put yarn cache
       - name: Cache yarn
         id: cache-yarn
@@ -27,8 +25,14 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      # assign modules cache key
+      - name: Set cache key -> node_modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
+        id: modules-cache
+        run: echo "::set-output name=dir::node_modules"
       # get/put modules cache
       - name: Cache modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
         id: cache-modules
         uses: actions/cache@v2
         with:
@@ -52,10 +56,6 @@ jobs:
       - name: Set cache key -> yarn
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      # assign modules cache key
-      - name: Set cache key -> node_modules
-        id: modules-cache
-        run: echo "::set-output name=dir::node_modules"
       # get/put yarn cache
       - name: Cache yarn
         id: cache-yarn
@@ -65,8 +65,14 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      # assign modules cache key
+      - name: Set cache key -> node_modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
+        id: modules-cache
+        run: echo "::set-output name=dir::node_modules"
       # get/put modules cache
       - name: Cache modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
         id: cache-modules
         uses: actions/cache@v2
         with:
@@ -102,10 +108,6 @@ jobs:
       - name: Set cache key -> yarn
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      # assign modules cache key
-      - name: Set cache key -> node_modules
-        id: modules-cache
-        run: echo "::set-output name=dir::node_modules"
       # get/put yarn cache
       - name: Cache yarn
         id: cache-yarn
@@ -115,8 +117,14 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      # assign modules cache key
+      - name: Set cache key -> node_modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
+        id: modules-cache
+        run: echo "::set-output name=dir::node_modules"
       # get/put modules cache
       - name: Cache modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
         id: cache-modules
         uses: actions/cache@v2
         with:
@@ -142,10 +150,6 @@ jobs:
       - name: Set cache key -> yarn
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      # assign modules cache key
-      - name: Set cache key -> node_modules
-        id: modules-cache
-        run: echo "::set-output name=dir::node_modules"
       # get/put yarn cache
       - name: Cache yarn
         id: cache-yarn
@@ -155,8 +159,14 @@ jobs:
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
+      # assign modules cache key
+      - name: Set cache key -> node_modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
+        id: modules-cache
+        run: echo "::set-output name=dir::node_modules"
       # get/put modules cache
       - name: Cache modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
         id: cache-modules
         uses: actions/cache@v2
         with:
@@ -192,6 +202,36 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
+      # assign yarn cache key
+      - name: Set cache key -> yarn
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      # get/put yarn cache
+      - name: Cache yarn
+        id: cache-yarn
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      # assign modules cache key
+      - name: Set cache key -> node_modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
+        id: modules-cache
+        run: echo "::set-output name=dir::node_modules"
+      # get/put modules cache
+      - name: Cache modules
+        if: ${{ env.CI_CACHE_MODULES == 'true' }}
+        id: cache-modules
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.modules-cache.outputs.dir }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
+      - name: Install dependencies
+        run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: Download build
         uses: actions/download-artifact@v2
         with:
