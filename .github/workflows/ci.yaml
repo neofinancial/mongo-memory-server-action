@@ -1,7 +1,8 @@
 name: CI
 on: [push]
 env:
-  CI_CACHE_MODULES: true
+  CI_CACHE_MODULES: "false"
+  # CI_YARN_CACHE_DIR: ${{ $(yarn cache dir) }}
 jobs:
 
   install-dependencies:
