@@ -25,11 +25,11 @@ jobs:
         if: steps.cache-node-modules.outputs.cache-hit != 'true'
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: ZIP dependencies
-        run: zip -r -q cache-node-modules.zip ${{ steps.yarn-cache.outputs.dir }}
+        run: zip -r -q node_modules.zip node_modules
       - uses: actions/upload-artifact@v2
         with:
           name: node-modules-artifact
-          path: ./cache-node-modules.zip
+          path: ./node_modules.zip
 
   format-lint-build:
     needs: install-dependencies
@@ -45,7 +45,7 @@ jobs:
         with:
           name: node-modules-artifact
       - name: UNZIP dependencies
-        run: unzip -q ./cache-node-modules.zip -d $(yarn cache dir)
+        run: unzip -o -q ./node_modules.zip
       - name: Install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: Format
@@ -75,7 +75,7 @@ jobs:
         with:
           name: node-modules-artifact
       - name: UNZIP dependencies
-        run: unzip -q ./cache-node-modules.zip -d $(yarn cache dir)
+        run: unzip -q ./node_modules.zip
       - name: Install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: Test
@@ -95,7 +95,7 @@ jobs:
         with:
           name: node-modules-artifact
       - name: UNZIP dependencies
-        run: unzip -q ./cache-node-modules.zip -d $(yarn cache dir)
+        run: unzip -o -q ./node_modules.zip
       - name: Install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: Download build
@@ -129,7 +129,7 @@ jobs:
         with:
           name: node-modules-artifact
       - name: UNZIP dependencies
-        run: unzip -q ./cache-node-modules.zip -d $(yarn cache dir)
+        run: unzip -o -q ./node_modules.zip
       - name: Install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: Download build
