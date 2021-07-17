@@ -102,8 +102,10 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: build-artifact
+      - name: DEBUG
+        run: ls -alh
       - name: UNZIP build
-        run: unzip -q ./build.zip -d build
+        run: unzip ./build.zip -d build
       - name: Validate
         uses: ./
         with:
@@ -116,7 +118,7 @@ jobs:
           mongoms-debug: 1
 
   package-tag:
-    needs: [ format-lint-build, unit-test, integration-test ]
+    needs: [ unit-test, integration-test ]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
