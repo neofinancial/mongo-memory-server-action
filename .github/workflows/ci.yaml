@@ -129,74 +129,58 @@ jobs:
       - name: Test
         run: yarn test
 
-  # integration-test:
-  #   needs: [ install-dependencies, format-lint-build ]
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 10
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/setup-node@v2
-  #       with:
-  #         node-version: 14
-  #     - name: Download dependencies
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: node-modules-artifact
-  #     - name: UNZIP dependencies
-  #       run: unzip -o -q ./node_modules.zip
-  #     - name: Install
-  #       run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
-  #     - name: Download build
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: build-artifact
-  #     - name: UNZIP build
-  #       run: unzip -q -o ./build.zip
-  #     - name: Validate
-  #       uses: ./
-  #       with:
-  #         db-connection-env-var: MONGO_CONNECTION_STRING
-  #         run-command: yarn ci:validate
-  #         binary-version: 4.4.6
-  #         instance-dbName: validation
-  #         instance-port: 27018
-  #         instance-storageEngine: wiredTiger
-  #         mongoms-debug: 1
+  integration-test:
+    needs: format-lint-build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Download build
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+      - name: UNZIP build
+        run: unzip -q -o ./build.zip
+      - name: Validate
+        uses: ./
+        with:
+          db-connection-env-var: MONGO_CONNECTION_STRING
+          run-command: yarn ci:validate
+          binary-version: 4.4.6
+          instance-dbName: validation
+          instance-port: 27018
+          instance-storageEngine: wiredTiger
+          mongoms-debug: 1
 
-  # package-tag:
-  #   needs: [ unit-test, integration-test ]
-  #   runs-on: ubuntu-latest
-  #   timeout-minutes: 10
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: actions/setup-node@v2
-  #       with:
-  #         node-version: 14
-  #     - name: Download dependencies
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: node-modules-artifact
-  #     - name: UNZIP dependencies
-  #       run: unzip -o -q ./node_modules.zip
-  #     - name: Install
-  #       run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
-  #     - name: Download build
-  #       uses: actions/download-artifact@v2
-  #       with:
-  #         name: build-artifact
-  #     - name: UNZIP build
-  #       run: unzip -q -o ./build.zip
-  #     - name: Package
-  #       run: yarn package
-  #     - name: Tag
-  #       if: github.ref == 'refs/heads/master'
-  #       uses: endbug/add-and-commit@v7
-  #       with:
-  #         add: build
-  #         author_email: jeffrey.dugas@neofinancial.com
-  #         author_name: Neo Financial Engineering
-  #         push: true
-  #         signoff: true
-  #         tag: 'v1.0.0 --force'
-  #       env:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  package-tag:
+    needs: [ unit-test, integration-test ]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Download build
+        uses: actions/download-artifact@v2
+        with:
+          name: build-artifact
+      - name: UNZIP build
+        run: unzip -q -o ./build.zip
+      - name: Package
+        run: yarn package
+      - name: Tag
+        if: github.ref == 'refs/heads/master'
+        uses: endbug/add-and-commit@v7
+        with:
+          add: build
+          author_email: jeffrey.dugas@neofinancial.com
+          author_name: Neo Financial Engineering
+          push: true
+          signoff: true
+          tag: 'v1.0.0 --force'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
