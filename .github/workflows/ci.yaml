@@ -138,6 +138,18 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
+      # assign modules cache key
+      - name: Set cache key -> node_modules
+        id: modules-cache
+        run: echo "::set-output name=dir::node_modules"
+      - name: Cache modules
+        id: cache-modules
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.modules-cache.outputs.dir }}
+          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-modules-
       - name: Download build
         uses: actions/download-artifact@v2
         with:
