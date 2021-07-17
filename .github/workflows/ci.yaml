@@ -103,7 +103,7 @@ jobs:
         with:
           name: build-artifact
       - name: UNZIP build
-        run: unzip -q ./build.zip
+        run: unzip -q -o ./build.zip
       - name: Validate
         uses: ./
         with:
@@ -137,7 +137,7 @@ jobs:
         with:
           name: build-artifact
       - name: UNZIP build
-        run: unzip -q ./build.zip
+        run: unzip -q -o ./build.zip
       - name: Package
         run: yarn package
       - name: Tag
