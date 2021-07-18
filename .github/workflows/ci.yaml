@@ -1,7 +1,5 @@
 name: CI
 on: [push]
-env:
-  CI_CACHE_MODULES: "false"
 jobs:
   install:
     runs-on: ubuntu-latest
@@ -11,36 +9,18 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      # assign yarn cache key
-      - name: Set cache key -> yarn
+      - name: Set yarn cache path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      # get/put yarn cache
-      - name: Cache yarn
-        id: cache-yarn
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      # assign modules cache key
-      - name: Set cache key -> node_modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: modules-cache
-        run: echo "::set-output name=dir::node_modules"
-      # get/put modules cache
-      - name: Cache modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.modules-cache.outputs.dir }}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
-      - name: Install dependencies
+      - name: Run yarn install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
+
   format-lint-build:
     needs: install
     runs-on: ubuntu-latest
@@ -50,43 +30,24 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      # assign yarn cache key
-      - name: Set cache key -> yarn
+      - name: Set yarn cache path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      # get/put yarn cache
-      - name: Cache yarn
-        id: cache-yarn
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      # assign modules cache key
-      - name: Set cache key -> node_modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: modules-cache
-        run: echo "::set-output name=dir::node_modules"
-      # get/put modules cache
-      - name: Cache modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.modules-cache.outputs.dir }}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
-      - name: Install dependencies
+      - name: Run yarn install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
-      - name: Format
+      - name: Run yarn format
         run: yarn format
-      - name: Lint
+      - name: Run yarn lint
         run: yarn lint
-      - name: Build
+      - name: Run yarn build
         run: yarn build
-      - name: ZIP build
+      - name: Zip build
         run: zip -r -q build.zip build
       - uses: actions/upload-artifact@v2
         with:
@@ -101,37 +62,18 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      # assign yarn cache key
-      - name: Set cache key -> yarn
+      - name: Set yarn cache path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      # get/put yarn cache
-      - name: Cache yarn
-        id: cache-yarn
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      # assign modules cache key
-      - name: Set cache key -> node_modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: modules-cache
-        run: echo "::set-output name=dir::node_modules"
-      # get/put modules cache
-      - name: Cache modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.modules-cache.outputs.dir }}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
-      - name: Install dependencies
+      - name: Run yarn install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
-      - name: Test
+      - name: Run yarn test
         run: yarn test
   validate:
     needs: format-lint-build
@@ -142,41 +84,21 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      # assign yarn cache key
-      - name: Set cache key -> yarn
+      - name: Set yarn cache path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      # get/put yarn cache
-      - name: Cache yarn
-        id: cache-yarn
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      # assign modules cache key
-      - name: Set cache key -> node_modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: modules-cache
-        run: echo "::set-output name=dir::node_modules"
-      # get/put modules cache
-      - name: Cache modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.modules-cache.outputs.dir }}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
-      - name: Install dependencies
+      - name: Run yarn install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
-      - name: Download build
-        uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v2
         with:
           name: build-artifact
-      - name: UNZIP build
+      - name: Unzip build
         run: unzip -q -o ./build.zip
       - name: Validate
         uses: ./
@@ -188,7 +110,7 @@ jobs:
           instance-port: 27018
           instance-storageEngine: wiredTiger
           mongoms-debug: 1
-  tag:
+  commit:
     needs: [ test, validate ]
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -197,53 +119,29 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
-      # assign yarn cache key
-      - name: Set cache key -> yarn
+      - name: Set yarn cache path
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
-      # get/put yarn cache
-      - name: Cache yarn
-        id: cache-yarn
-        uses: actions/cache@v2
+      - uses: actions/cache@v2
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: |
             ${{ runner.os }}-yarn-
-      # assign modules cache key
-      - name: Set cache key -> node_modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: modules-cache
-        run: echo "::set-output name=dir::node_modules"
-      # get/put modules cache
-      - name: Cache modules
-        if: ${{ env.CI_CACHE_MODULES == 'true' }}
-        id: cache-modules
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.modules-cache.outputs.dir }}
-          key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-modules-
-      - name: Install dependencies
+      - name: Run yarn install
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
-      - name: Download build
-        uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v2
         with:
           name: build-artifact
-      - name: UNZIP build
+      - name: Unzip build
         run: unzip -q -o ./build.zip
-      - name: Package
+      - name: Run yarn package
         run: yarn package
-      - name: Tag
-        if: github.ref == 'refs/heads/master'
-        uses: endbug/add-and-commit@v7
+      - uses: endbug/add-and-commit@v7
+        if: github.ref != 'refs/heads/master'
         with:
           add: build
-          author_email: jeffrey.dugas@neofinancial.com
-          author_name: Neo Financial Engineering
-          push: true
+          default_author: github_actions
           signoff: true
-          tag: 'v1.0.0 --force'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
