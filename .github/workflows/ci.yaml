@@ -2,10 +2,8 @@ name: CI
 on: [push]
 env:
   CI_CACHE_MODULES: "false"
-  # CI_YARN_CACHE_DIR: ${{ $(yarn cache dir) }}
 jobs:
-
-  install-dependencies:
+  install:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -43,7 +41,6 @@ jobs:
             ${{ runner.os }}-modules-
       - name: Install dependencies
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
-
   format-lint-build:
     needs: install-dependencies
     runs-on: ubuntu-latest
@@ -95,8 +92,7 @@ jobs:
         with:
           name: build-artifact
           path: ./build.zip
-
-  unit-test:
+  test:
     needs: install-dependencies
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -137,8 +133,7 @@ jobs:
         run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
       - name: Test
         run: yarn test
-
-  integration-test:
+  validate:
     needs: format-lint-build
     runs-on: ubuntu-latest
     timeout-minutes: 10
@@ -193,8 +188,7 @@ jobs:
           instance-port: 27018
           instance-storageEngine: wiredTiger
           mongoms-debug: 1
-
-  package-tag:
+  tag:
     needs: [ unit-test, integration-test ]
     runs-on: ubuntu-latest
     timeout-minutes: 10
