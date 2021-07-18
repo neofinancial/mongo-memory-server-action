@@ -1,6 +1,5 @@
 name: CI
 on: push
-if: github.ref != 'refs/heads/master'
 jobs:
   install:
     runs-on: ubuntu-latest
