@@ -9,11 +9,10 @@
   "author": "Neo Financial Engineering <engineering@neofinancial.com>",
   "main": "build/index.js",
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && NODE_ENV=production ncc build -o build --minify",
     "doc": "npx typedoc src/index.ts",
     "format": "prettier --write **/*.ts",
     "lint": "eslint \"**/*.{ts,js}\"",
-    "package": "NODE_ENV=production ncc build -o build --minify",
     "test": "jest --coverage --detectOpenHandles --runInBand",
     "ci:validate": "node build/validate.js"
   },

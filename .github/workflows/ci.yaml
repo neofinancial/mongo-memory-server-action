@@ -1,5 +1,6 @@
 name: CI
-on: [ push ]
+on: push
+if: github.ref != 'refs/heads/master'
 jobs:
   install:
     runs-on: ubuntu-latest
@@ -110,8 +111,6 @@ jobs:
           instance-port: 27018
           instance-storageEngine: wiredTiger
           mongoms-debug: 1
-      - name: Run yarn package
-        run: yarn package
       - uses: endbug/add-and-commit@v7
         if: github.ref != 'refs/heads/master'
         with:
