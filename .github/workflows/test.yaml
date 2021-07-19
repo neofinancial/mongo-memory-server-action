@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: ls -R
-      - run: zip -r -q ${{ github.sha }}.zip ${{ github.workspace }}
+      - run: zip -r -q ${{ github.sha }}.zip .
       - uses: 'actions/upload-artifact@v2'
         with:
           name: ${{ github.sha }}
@@ -22,5 +22,5 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: ${{ github.sha }}
-      - run: unzip -q -o ${{ github.sha }}.zip -d ${{ github.workspace }}
+      - run: unzip -q -o ${{ github.sha }}.zip -d .
       - run: ls -R
