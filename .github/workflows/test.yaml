@@ -2,10 +2,9 @@ name: test
 on:
   push:
     branches-ignore: [ master, main ]
-defaults:
-  runs-on: ubuntu-latest
 jobs:
   upload-source:
+    runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@v2
@@ -15,6 +14,7 @@ jobs:
           name: ${{ github.sha }}
           path: ${{ github.workspace }}
   download-source:
+    runs-on: ubuntu-latest
     timeout-minutes: 2
     steps:
       - uses: actions/download-artifact@v2
