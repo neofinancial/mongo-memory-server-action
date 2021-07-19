@@ -5,7 +5,7 @@ on:
 jobs:
   upload-source:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 1
     steps:
       - uses: actions/checkout@v2
       - run: ls -R
@@ -16,7 +16,8 @@ jobs:
           path: ${{ github.sha }}.zip
   download-source:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    needs: [ upload-source ]
+    timeout-minutes: 1
     steps:
       - uses: actions/download-artifact@v2
         with:
