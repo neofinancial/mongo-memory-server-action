@@ -8,6 +8,7 @@ jobs:
     timeout-minutes: 2
     steps:
       - uses: actions/checkout@v2
+      - run: ls -R
       - run: zip -r -q ${{ github.sha }}.zip ${{ github.workspace }}
       - uses: 'actions/upload-artifact@v2'
         with:
@@ -21,3 +22,4 @@ jobs:
         with:
           name: ${{ github.sha }}
       - run: unzip -q -o ${{ github.sha }}.zip -d ${{ github.workspace }}
+      - run: ls -R
