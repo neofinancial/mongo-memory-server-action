@@ -12,7 +12,7 @@ jobs:
       - uses: 'actions/upload-artifact@v2'
         with:
           name: ${{ github.sha }}
-          path: ${{ github.workspace }}
+          path: ${{ github.sha }}.zip
   download-source:
     runs-on: ubuntu-latest
     timeout-minutes: 2
@@ -20,4 +20,4 @@ jobs:
       - uses: actions/download-artifact@v2
         with:
           name: ${{ github.sha }}
-      - run: unzip -q -o ${{ github.sha }}.zip
+      - run: unzip -q -o ${{ github.sha }}.zip -d ${{ github.workspace }}
