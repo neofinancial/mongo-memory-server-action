@@ -1,0 +1,23 @@
+name: test
+on:
+  push:
+    branches-ignore: [ master, main ]
+defaults:
+  runs-on: ubuntu-latest
+jobs:
+  upload-source:
+    timeout-minutes: 2
+    steps:
+      - uses: actions/checkout@v2
+      - run: zip -r -q ${{ github.sha }}.zip ${{ github.workspace }}
+      - uses: 'actions/upload-artifact@v2'
+        with:
+          name: ${{ github.sha }}
+          path: ${{ github.workspace }}
+  download-source:
+    timeout-minutes: 2
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: ${{ github.sha }}
+      - run: unzip -q -o ${{ github.sha }}.zip
