@@ -3,7 +3,7 @@ on:
   push:
     branches-ignore: [ master, main ]
 jobs:
-  upload-source:
+  source:
     runs-on: ubuntu-latest
     timeout-minutes: 1
     steps:
@@ -16,7 +16,7 @@ jobs:
           path: ${{ github.sha }}.zip
   download-source:
     runs-on: ubuntu-latest
-    needs: [ upload-source ]
+    needs: [ source ]
     timeout-minutes: 1
     steps:
       - uses: actions/download-artifact@v2
