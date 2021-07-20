@@ -20,7 +20,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn install --prefer-offline --frozen-lockfile --no-progress --non-interactive
-      - run: zip -r -q ${{ github.sha }}.zip .
+      - run: zip -r -y -q ${{ github.sha }}.zip .
       - uses: 'actions/upload-artifact@v2'
         with:
           name: ${{ github.sha }}
@@ -47,7 +47,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn install --prefer-offline --frozen-lockfile --no-progress --non-interactive
-      - run: pushd node-modules && ls .bin && popd
+      - run: pushd node_modules && ls .bin && popd
       - run: yarn lint
 
   build:
