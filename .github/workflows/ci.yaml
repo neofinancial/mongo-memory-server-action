@@ -80,7 +80,7 @@ jobs:
 
   integration-test:
     runs-on: ubuntu-latest
-    needs: [ lint, build, unit-test-dummy, unit-test-mms ]
+    needs: [ lint, build, unit-test ]
     timeout-minutes: 2
     steps:
       - uses: actions/setup-node@v2
