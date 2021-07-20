@@ -1,3 +1,9 @@
+/**
+ * Tests MemoryServerFactory class
+ * 
+ * @group memory-server-factory
+ */
+
 import { MongoMemoryServer, MongoMemoryServerStates } from 'mongodb-memory-server-core/lib/MongoMemoryServer';
 import { StorageEngine } from 'mongodb-memory-server-core/lib/util/MongoInstance';
 
