@@ -1,6 +1,6 @@
 /**
  * Tests MemoryServerFactory class
- * 
+ *
  * @group memory-server-factory
  */
 

@@ -8,7 +8,7 @@ import { MemoryServerFactory } from './factory/memory-server-factory';
 async function runCommand(command: string, connectionString: string): Promise<string> {
   console.info(`Executing the target script: "${command}"`);
 
-  const connectionStringEnvVar = core.getInput('db-connection-env-var');
+  const connectionStringEnvVar = core.getInput('dbConnectionStringEnvVar');
   const mongoMsDebug = core.getInput('mongoms-debug');
 
   process.env[connectionStringEnvVar] = connectionString;
@@ -30,15 +30,15 @@ async function run(): Promise<void> {
   let mongodb: MongoMemoryServer | undefined;
 
   try {
-    const dbName = core.getInput('instance-dbName');
-    const port: number = Number.parseInt(core.getInput('instance-port'));
-    const storageEngine = core.getInput('instance-storageEngine');
+    const dbName = core.getInput('instanceDbName');
+    const port: number = Number.parseInt(core.getInput('instancePort'));
+    const storageEngine = core.getInput('instanceStorageEngine');
     const version = core.getInput('binary-version');
 
     mongodb = await MemoryServerFactory.generateMemoryServer(dbName, port, storageEngine, version);
 
     const connectionString = await MemoryServerFactory.verifyMemoryServer(mongodb);
-    const command = core.getInput('run-command');
+    const command = core.getInput('runCommand');
 
     const stdOut = await runCommand(command, connectionString);
 

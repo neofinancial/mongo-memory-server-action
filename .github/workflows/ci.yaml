@@ -5,6 +5,8 @@ on:
 env:
   PACKAGE_BUILD_FOLDER: build
 jobs:
+  # This demonstrates how a Workflow can (1) pull source code and (2) install dependencies exactly once using one Job,
+  # and then relying on that artifact in subsequent Jobs - you know, like every other CI/CD platform!
   source:
     runs-on: ubuntu-latest
     timeout-minutes: 2
@@ -25,9 +27,10 @@ jobs:
       - run: zip -r -y -q ${{ github.sha }}.zip .
       - uses: 'actions/upload-artifact@v2'
         with:
-          name: ${{ github.sha }}
-          path: ${{ github.sha }}.zip
-
+          name: code.${{ github.sha }}
+          path: code.${{ github.sha }}.zip
+          retention-days: 1
+  # Code-linting
   lint:
     runs-on: ubuntu-latest
     needs: [ source ]
@@ -38,10 +41,10 @@ jobs:
           node-version: 14
       - uses: actions/download-artifact@v2
         with:
-          name: ${{ github.sha }}
-      - run: unzip -q -o ${{ github.sha }}.zip -d .
+          name: code.${{ github.sha }}
+      - run: unzip -q -o code.${{ github.sha }}.zip -d .
       - run: yarn lint
-
+  # Compile/Transpile/Build
   build:
     runs-on: ubuntu-latest
     needs: [ source ]
@@ -52,32 +55,36 @@ jobs:
           node-version: 14
       - uses: actions/download-artifact@v2
         with:
-          name: ${{ github.sha }}
-      - run: unzip -q -o ${{ github.sha }}.zip -d .
+          name: code.${{ github.sha }}
+      - run: unzip -q -o code.${{ github.sha }}.zip -d .
       - run: yarn build
-      - run: zip -r -q ${{ env.PACKAGE_BUILD_FOLDER }}.zip ${{ env.PACKAGE_BUILD_FOLDER }}
+      - run: zip -r -q ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}.zip ${{ env.PACKAGE_BUILD_FOLDER }}
       - uses: actions/upload-artifact@v2
         with:
-          name: build-artifact
-          path: ./${{ env.PACKAGE_BUILD_FOLDER }}.zip
-
+          name: ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}
+          path: ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}.zip
+          retention-days: 1
+  # Apply unit tests directly against the TypeScript code, in parallel with 'lint' and 'build'
   unit-test:
     runs-on: ubuntu-latest
     needs: [ source ]
     timeout-minutes: 2
     strategy:
       matrix:
-        test-group: [ dummy, memory-server-factory ]
+        test-group:
+          - memory-server-factory
+          - group-2
+          - group-3
     steps:
       - uses: actions/setup-node@v2
         with:
           node-version: 14
       - uses: actions/download-artifact@v2
         with:
-          name: ${{ github.sha }}
-      - run: unzip -q -o ${{ github.sha }}.zip -d .
+          name: code.${{ github.sha }}
+      - run: unzip -q -o code.${{ github.sha }}.zip -d .
       - run: yarn test --group=${{ matrix.test-group }}
-
+  # In this case, the integration-test actually demonstrates running this GitHub Action locally to demonstrate its efficacy.
   integration-test:
     runs-on: ubuntu-latest
     needs: [ lint, build, unit-test ]
@@ -88,22 +95,23 @@ jobs:
           node-version: 14
       - uses: actions/download-artifact@v2
         with:
-          name: ${{ github.sha }}
-      - run: unzip -q -o ${{ github.sha }}.zip -d .
+          name: code.${{ github.sha }}
+      - run: unzip -q -o code.${{ github.sha }}.zip -d .
       - uses: actions/download-artifact@v2
         with:
-          name: build-artifact
-      - run: unzip -q -o ./${{ env.PACKAGE_BUILD_FOLDER }}.zip
+          name: ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}
+      - run: unzip -q -o ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}.zip
       - uses: ./
         with:
-          db-connection-env-var: MONGO_CONNECTION_STRING
-          run-command: yarn ci:validate
-          binary-version: 4.4.6
-          instance-dbName: validation
-          instance-port: 27018
-          instance-storageEngine: wiredTiger
-          mongoms-debug: 1
-
+          dbConnectionStringEnvVar: MONGO_CONNECTION_STRING
+          runCommand: yarn ci:validate
+          mongomsBinaryVersion: 4.4.6
+          mongomsDatabaseName: validation
+          mongomsPort: 27018
+          mongomsStorageEngine: wiredTiger
+          mongomsDebug: 1
+  # This Job is the precursor to creating a Pull Request to the default branch, pushing the build folder.
+  # The build folder is required for publishing a Git Tag in a downstream Workflow.
   commit:
     runs-on: ubuntu-latest
     needs: [ integration-test ]
@@ -114,12 +122,12 @@ jobs:
           node-version: 14
       - uses: actions/download-artifact@v2
         with:
-          name: ${{ github.sha }}
-      - run: unzip -q -o ${{ github.sha }}.zip -d .
+          name: code.${{ github.sha }}
+      - run: unzip -q -o code.${{ github.sha }}.zip -d .
       - uses: actions/download-artifact@v2
         with:
-          name: build-artifact
-      - run: unzip -q -o ./${{ env.PACKAGE_BUILD_FOLDER }}.zip
+          name: ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}
+      - run: unzip -q -o ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}.zip
       - uses: endbug/add-and-commit@v7
         if: github.ref != 'refs/heads/master'
         with:

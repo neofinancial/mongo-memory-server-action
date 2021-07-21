@@ -11,29 +11,29 @@ In your .github/workflows folder, add a new job step to the appropriate workflow
 ```yaml
       - uses: neofinancial/mongo-memory-server-action@v1.0.0
         with:
-          db-connection-env-var: MONGO_CONNECTION_STRING
-          run-command: yarn use:database
+          dbConnectionStringEnvVar: MONGO_CONNECTION_STRING
+          runCommand: yarn use:database
           binary-version: 4.0.9
-          instance-dbName: validation
-          instance-port: 27017
-          instance-storageEngine: wiredTiger
+          instanceDbName: validation
+          instancePort: 27017
+          instanceStorageEngine: wiredTiger
           mongoms-debug: 1
 ```
 
 | Input  	| Description  	|
 |---	|---	|
-| `db-connection-env-var`	| __required__: the ENV variable that the action will set to provide the DB connection string to your script  	|
-| `run-command` 	| __required__: the shell command the action will execute once the database is available  	|
+| `dbConnectionStringEnvVar`	| __required__: the ENV variable that the action will set to provide the DB connection string to your script  	|
+| `runCommand` 	| __required__: the shell command the action will execute once the database is available  	|
 | `binary-version` 	| specify a version of the [database engine](https://docs.mongodb.com/v5.0/release-notes/) - defaults to `4.0.25` as per the [mongo-memory-server library app defaults](https://github.com/nodkz/mongodb-memory-server/blob/345ecee52e9cc86028ac0510ab8dce55a896b13f/packages/mongodb-memory-server-core/src/util/resolveConfig.ts#L28) |
-| `instance-dbName`  	| a database name (defaults to a [random string](https://github.com/nodkz/mongodb-memory-server#available-options-for-mongomemoryserver)) 	|
-| `instance-port`  	| the port the DB will listen on (defaults to ["27017"](https://github.com/nodkz/mongodb-memory-server#available-options-for-mongomemoryserver)) 	|
-| `instance-storageEngine` 	| the storage engine (defaults to ["ephemeralForTest"](https://github.com/nodkz/mongodb-memory-server#available-options-for-mongomemoryserver); alternatively, use ["wiredTiger"](https://docs.mongodb.com/manual/core/wiredtiger/))  	|
+| `instanceDbName`  	| a database name (defaults to a [random string](https://github.com/nodkz/mongodb-memory-server#available-options-for-mongomemoryserver)) 	|
+| `instancePort`  	| the port the DB will listen on (defaults to ["27017"](https://github.com/nodkz/mongodb-memory-server#available-options-for-mongomemoryserver)) 	|
+| `instanceStorageEngine` 	| the storage engine (defaults to ["ephemeralForTest"](https://github.com/nodkz/mongodb-memory-server#available-options-for-mongomemoryserver); alternatively, use ["wiredTiger"](https://docs.mongodb.com/manual/core/wiredtiger/))  	|
 | `mongoms-debug`  | if provided _and given any value_, sets the ENV variable used by mongo-memory-server for [Debug mode](https://github.com/nodkz/mongodb-memory-server#enable-debug-mode)	|
 
 
 ## Implementation
 
-In the example, the **`run-command`** parameter value ("`yarn seed:database`") is executed synchronously by the action using a child process. That script is therefore responsible for reading the ENV variable `MONGO_CONNECTION_STRING` and configuring MongoDB client(s) accordingly.
+In the example, the **`runCommand`** parameter value ("`yarn seed:database`") is executed synchronously by the action using a child process. That script is therefore responsible for reading the ENV variable `MONGO_CONNECTION_STRING` and configuring MongoDB client(s) accordingly.
 
 The memory-server is stopped (and destroyed) subsequent to the completion of this command, so the command's process should encompass all interactions with it.
 
