@@ -127,10 +127,6 @@ jobs:
           node-version: 14
       - uses: actions/download-artifact@v2
         with:
-          name: code.${{ github.sha }}
-      - run: unzip -q -o code.${{ github.sha }}.zip -d .
-      - uses: actions/download-artifact@v2
-        with:
           name: ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}
       - run: unzip -q -o ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}.zip -d ./${{ env.PACKAGE_BUILD_FOLDER }}
       - run: ls -alh
@@ -139,6 +135,5 @@ jobs:
       - uses: endbug/add-and-commit@v7
         if: ${{ github.ref != 'refs/heads/master' }}
         with:
-          # add: ${{ env.PACKAGE_BUILD_FOLDER }}
           default_author: github_actions
           signoff: true
