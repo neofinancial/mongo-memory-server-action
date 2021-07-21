@@ -24,7 +24,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-yarn-
       - run: yarn install --prefer-offline --frozen-lockfile --no-progress --non-interactive
-      - run: zip -r -y -q ${{ github.sha }}.zip .
+      - run: zip -r -y -q code.${{ github.sha }}.zip .
       - uses: 'actions/upload-artifact@v2'
         with:
           name: code.${{ github.sha }}
