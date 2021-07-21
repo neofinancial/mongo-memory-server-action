@@ -131,6 +131,8 @@ jobs:
         with:
           name: ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}
       - run: unzip -q -o ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}.zip
+      - run: ls -alh
+      - run: env
       - uses: endbug/add-and-commit@v7
         if: ${{ github.ref != 'refs/heads/master' }}
         with:
