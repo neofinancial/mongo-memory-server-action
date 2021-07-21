@@ -47,33 +47,21 @@ The graph below demonstrates a hypothetical CI Workflow, with each 'node' repres
 `finally`: id7
   - a conceptual step (notify / publish / purge artifacts / etc.)
 
-<!DOCTYPE html>
-<html lang="en">
-   <head>
-	 <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/8.0.0/mermaid.min.js"></script>
-    </head>
-<body>
-<hr />
-<div>
-  <b> case 1:
-    <ul>
-      <li>'unit-test' DOES NOT require 'build'</li>
-      <li>'integration-test` requires 'build'</li>
-    </ul>
-  </b>
-  <div class="mermaid">
+### case 1:
+
+- 'unit-test' DOES NOT require 'build'
+- 'integration-test` requires 'build'
+
+```mermaid
   graph LR
     id1[[source]] --> id2[[code-lint]] --> id6(integration-test*)
     id1[[source]] --> id3[[code-analysis]] --> id6(integration-test*)
     id1[[source]] --> id4[[build]] --> id6(integration-test*)
     id1[[source]] --> id5(unit-test*) --> id6(integration-test*)
     id6(integration-test*) --> id7[[finally]]
-  </div>
-</div>
-<hr />
-<div>
-  <b> case 1:
-    <ul>
+```
+
+## case 2
       <li>'unit-test' requires 'build'</li>
       <li>'integration-test` requires 'build'</li>
     </ul>
