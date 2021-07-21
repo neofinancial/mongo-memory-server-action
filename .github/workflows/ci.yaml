@@ -135,12 +135,10 @@ jobs:
       - run: unzip -q -o ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}.zip -d ./${{ env.PACKAGE_BUILD_FOLDER }}
       - run: ls -alh
       - run: env
+      - run: rm *.zip
       - uses: endbug/add-and-commit@v7
         if: ${{ github.ref != 'refs/heads/master' }}
         with:
-          add: ${{ env.PACKAGE_BUILD_FOLDER }}
-          author_name: Humpty Dumpty
-          author_email: humpty.dumpty@nurseryrhymes.org
-          message: Commit the `${{ env.PACKAGE_BUILD_FOLDER }}` folder
-          # default_author: github_actions
+          # add: ${{ env.PACKAGE_BUILD_FOLDER }}
+          default_author: github_actions
           signoff: true
