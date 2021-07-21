@@ -119,6 +119,9 @@ jobs:
     needs: [integration-test]
     timeout-minutes: 2
     steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - uses: actions/setup-node@v2
         with:
           node-version: 14
