@@ -136,5 +136,8 @@ jobs:
         if: ${{ github.ref != 'refs/heads/master' }}
         with:
           add: ${{ env.PACKAGE_BUILD_FOLDER }}
-          default_author: github_actions
+          author_name: Humpty Dumpty
+          author_email: humpty.dumpty@nurseryrhymes.org
+          message: Commit the `${{ env.PACKAGE_BUILD_FOLDER }}` folder
+          # default_author: github_actions
           signoff: true
