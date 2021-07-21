@@ -119,6 +119,7 @@ jobs:
     needs: [integration-test]
     timeout-minutes: 2
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
           node-version: 14
@@ -130,11 +131,9 @@ jobs:
         with:
           name: ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}
       - run: unzip -q -o ${{ env.PACKAGE_BUILD_FOLDER }}.${{ github.sha }}.zip
-      - run: env
       - uses: endbug/add-and-commit@v7
-        if: github.ref != 'refs/heads/master'
+        if: ${{ github.ref != 'refs/heads/master' }}
         with:
           add: ${{ env.PACKAGE_BUILD_FOLDER }}
           default_author: github_actions
           signoff: true
-          token: ${{ secrets.GITHUB_TOKEN }}
