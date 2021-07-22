@@ -61,30 +61,15 @@ The graph below demonstrates a hypothetical CI Workflow, with each 'node' repres
     id6(integration-test*) --> id7[[finally]]
 ```
 
-## case 2
-      <li>'unit-test' requires 'build'</li>
-      <li>'integration-test` requires 'build'</li>
-    </ul>
-  </b>
-  <div class="mermaid">
+### case 2
+
+- 'unit-test' requires 'build'
+- 'integration-test` requires 'build'
+
+```mermaid
   graph LR
     id1[[source]] --> id2[[code-lint]] --> id4[[build]]
     id1[[source]] --> id3[[code-analysis]] --> id4[[build]]
     id4[[build]] --> id5(unit-test*) --> id7[[finally]]
     id4[[build]] --> id6(integration-test*) --> id7[[finally]]
-  </div>
-</div>
-</body>
-<script>
-var config = {
-    startOnLoad:true,
-    theme: 'forest',
-    flowchart:{
-            useMaxWidth:false,
-            htmlLabels:true
-        }
-};
-mermaid.initialize(config);
-window.mermaid.init(undefined, document.querySelectorAll('.language-mermaid'));
-</script>
-</html>
+```
