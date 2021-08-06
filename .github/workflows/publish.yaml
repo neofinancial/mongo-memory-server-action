@@ -1,8 +1,7 @@
 name: publish
 on:
   push:
-    # update-workflows will be removed once tested against live GitHub Actions
-    branches: [master, main, update-workflows]
+    branches: [master, main]
 jobs:
   tag:
     runs-on: ubuntu-latest
