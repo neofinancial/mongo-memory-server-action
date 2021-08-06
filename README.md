@@ -48,24 +48,4 @@ This repository's CI workflow has a 'validate' job @ `src/validate.ts` (technica
 
 ### Versioning
 
-Semantic versioning should be applied via the CI workflow by updating the `tag` value. Because the tagging step only occurs in the `master` branch, only a merge into `master` will trigger the bump.
-
-```yaml
-- name: Commit build
-  if: github.ref == 'refs/heads/master'
-  uses: endbug/add-and-commit@v7
-  with:
-    add: build
-    author_name: Neo Financial Engineering
-    push: true
-    signoff: true
-    tag: 'v1.0.0 -m "your message here"'
-  env:
-    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-To bump the version as part of a pull request:
-
-- update the package.json "version"
-- update the `Tag` step of the "build" job in the CI workflow (.github/workflows/ci.yaml)
-- update this README to reference the latest tag
+Semantic versioning should be applied via the CI workflow by updating the version in `package.json` (and the reference to it in this README.md). The `publish` workflow will be triggered on the merge into `master`, generating a tag name from the package version.

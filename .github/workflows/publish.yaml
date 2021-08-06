@@ -5,7 +5,7 @@ on:
 jobs:
   tag:
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v2
       - uses: Saionaro/extract-package-version@v1.1.1
