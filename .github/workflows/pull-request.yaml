@@ -5,6 +5,7 @@ on:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == true
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v2
