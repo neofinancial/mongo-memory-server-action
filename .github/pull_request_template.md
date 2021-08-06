@@ -1,23 +1,29 @@
-> Add a list of changes
+# **Name of PR**
 
-### Related PRs
+<!-- This PR fixes #NUMBER_OF_THE_ISSUE, and fixes #NUMBER_OF_THE_ISSUE -->
 
-> If your PR is related to other PRs, link them here.
+## Description
 
-### Release Plan
+<!--
+Please include a summary of the change and/or which issue is fixed.
+List any dependencies that are required for this change if there are any.
+-->
 
-> Include sequence for tasks
+## Additional context
 
-### Updated dependencies
+<!-- Add any other context or additional information about the pull request.-->
 
-> Include a list of newly added or updated dependencies
+<!--
+If it fixes any existing issue,  please let us know this way:
 
-### Future work
+  - uncomment the comment above "description", then
+  - add after the "#" your number of issue.
 
-> If this PR is known to break here or in another service, or a follow up is needed to complete a ticket, describe that here
+  Example: # **This pull request fixes #NUMBER_OF_THE_ISSUE issue**
 
-### Checklist
 
-- [ ] Have you fully tested your PR locally (and integration if necessary)?
-- [ ] Have you written thorough tests for your work?
-- [ ] Have you updated the ./github/workflows/ci.yaml `validate` job to reflect any changes?
+If there are multiple issues to be closed with the merge of this pull request please do it like so:
+
+  **This pull request fixes #NUMBER_OF_THE_ISSUE, fixes #NUMBER_OF_THE_ISSUE and fixes #NUMBER_OF_THE_ISSUE issue**.
+
+-->
