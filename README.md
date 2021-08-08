@@ -3,7 +3,12 @@
 [![Build status](https://github.com/neofinancial/mongo-memory-server-action/workflows/ci/badge.svg)](https://github.com/neofinancial/mongo-memory-server-action/actions)
 [![Test status](https://github.com/neofinancial/mongo-memory-server-action/workflows/pull-request/badge.svg)](https://github.com/neofinancial/mongo-memory-server-action/actions)
 
-Provides a CI-time MongoDB memory database using [mongo-memory-server](https://github.com/nodkz/mongodb-memory-server), sets your specified environment variable to the new server's connection string, and executes your specified script. Created to support CI-time testing of database-seed scripts, but suitable for testing other MongoDB-dependent processes in favor of a full database mock.
+Provides a CI-time MongoDB memory database using [mongo-memory-server](https://github.com/nodkz/mongodb-memory-server), sets your specified environment variable to the new server's connection string, and executes your specified script. Created to support CI-time testing of:
+
+- seed and migration scripts,
+- complex queries,
+- schema implementation,
+- or any MongoDB-dependent process where a mock database might not be suitable.
 
 ## Usage
 
@@ -12,7 +17,7 @@ In your .github/workflows folder, add a new job step to the appropriate workflow
 ```yaml
 - uses: neofinancial/mongo-memory-server-action@v1.0.0
   with:
-    db-connection-env-var: MONGO_CONNECTION_STRING
+    db-connection-env-var: MONGODB_CONNECTION_STRING
     run-command: yarn use:database
     binary-version: 4.0.9
     instance-dbName: validation
@@ -33,7 +38,7 @@ In your .github/workflows folder, add a new job step to the appropriate workflow
 
 ## Implementation
 
-In the example, the **`run-command`** parameter value ("`yarn seed:database`") is executed synchronously by the action using a child process. That script is therefore responsible for reading the ENV variable `MONGO_CONNECTION_STRING` and configuring MongoDB client(s) accordingly.
+In the example, the **`run-command`** parameter value ("`yarn use:database`") is executed synchronously by the action using a child process. That script is therefore responsible for reading the ENV variable `MONGODB_CONNECTION_STRING` and configuring MongoDB client(s) accordingly.
 
 The memory-server is stopped (and destroyed) subsequent to the completion of this command, so the command's process should encompass all interactions with it.
 
