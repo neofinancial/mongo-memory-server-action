@@ -29,13 +29,3 @@ jobs:
         run: yarn build
       - name: Test
         run: yarn test
-      - name: Validate
-        uses: ./
-        with:
-          db-connection-env-var: MONGO_CONNECTION_STRING
-          run-command: yarn ci:validate
-          binary-version: 4.4.6
-          instance-dbName: validation
-          instance-port: 27018
-          instance-storageEngine: wiredTiger
-          mongoms-debug: 1
