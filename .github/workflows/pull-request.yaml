@@ -39,6 +39,8 @@ jobs:
           instance-port: 27018
           instance-storageEngine: wiredTiger
           mongoms-debug: 1
+      - name: Package
+        run: yarn package
       - name: Commit latest build artifacts
         uses: endbug/add-and-commit@v7
         with:
