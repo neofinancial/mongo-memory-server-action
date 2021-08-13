@@ -50,5 +50,6 @@ jobs:
       - name: Commit latest build artifacts
         uses: endbug/add-and-commit@v7
         with:
-          default_author: github_actions
+          author_name: NeoBot
+          author_email: neomcneoface@neofinancial.com
           signoff: true
