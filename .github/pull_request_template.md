@@ -1,23 +1,17 @@
-> Add a list of changes
+# **Name of Pull Request**
 
-### Related PRs
+<!--
+Please reference an issue number(s) if the PR addresses one or more issues.
+-->
 
-> If your PR is related to other PRs, link them here.
+## Description
 
-### Release Plan
+<!--
+Please provide a summary of changes, and a list of any dependency changes.
+-->
 
-> Include sequence for tasks
+## Additional context
 
-### Updated dependencies
-
-> Include a list of newly added or updated dependencies
-
-### Future work
-
-> If this PR is known to break here or in another service, or a follow up is needed to complete a ticket, describe that here
-
-### Checklist
-
-- [ ] Have you fully tested your PR locally (and integration if necessary)?
-- [ ] Have you written thorough tests for your work?
-- [ ] Have you updated the ./github/workflows/ci.yaml `validate` job to reflect any changes?
+<!--
+Please add any other context or additional information about the pull request.
+-->

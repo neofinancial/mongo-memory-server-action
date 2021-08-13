@@ -1,0 +1,55 @@
+name: pull-request
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install
+        run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
+      - name: Lint
+        run: yarn lint
+      - name: Build
+        run: yarn build
+      - name: Test
+        run: yarn test
+      - name: Validate
+        uses: ./
+        with:
+          db-connection-env-var: MONGO_CONNECTION_STRING
+          run-command: yarn ci:validate
+          binary-version: 4.4.6
+          instance-dbName: validation
+          instance-port: 27018
+          instance-storageEngine: wiredTiger
+          mongoms-debug: 1
+      - name: Package
+        run: yarn package
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.NEOBOT_GPG_PRIVATE_KEY }}
+          git-user-signingkey: true
+          git-commit-gpgsign: true
+      - name: Commit latest build artifacts
+        uses: endbug/add-and-commit@v7
+        with:
+          author_name: NeoBot
+          author_email: neomcneoface@neofinancial.com
+          signoff: true

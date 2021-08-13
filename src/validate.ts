@@ -1,5 +1,6 @@
-import * as core from '@actions/core';
 import { MongoClient } from 'mongodb';
+
+import * as core from '@actions/core';
 
 async function runTest(): Promise<void> {
   console.info('Testing connectivity via MongoClient');
@@ -10,7 +11,7 @@ async function runTest(): Promise<void> {
   try {
     client = new MongoClient(connectionString, { useUnifiedTopology: true });
     await client.connect();
-    console.log(`Client connected: ${client.isConnected()}`);
+    console.log(`Client connected to "${connectionString}": ${client.isConnected()}`);
 
     // do work
   } catch (err) {

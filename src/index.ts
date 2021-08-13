@@ -1,7 +1,8 @@
-import * as core from '@actions/core';
-import { MongoMemoryServer } from 'mongodb-memory-server-global';
-import { MongoMemoryServerStates } from 'mongodb-memory-server-core/lib/MongoMemoryServer';
 import { execSync } from 'child_process';
+import { MongoMemoryServerStates } from 'mongodb-memory-server-core/lib/MongoMemoryServer';
+import { MongoMemoryServer } from 'mongodb-memory-server-global';
+
+import * as core from '@actions/core';
 
 import { MemoryServerFactory } from './factory/memory-server-factory';
 
@@ -14,6 +15,7 @@ async function runCommand(command: string, connectionString: string): Promise<st
   process.env[connectionStringEnvVar] = connectionString;
 
   if (mongoMsDebug) {
+    console.log('Applying MONGOMS_DEBUG environment variable');
     process.env['MONGOMS_DEBUG'] = '1';
   }
 
