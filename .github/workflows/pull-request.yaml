@@ -41,6 +41,12 @@ jobs:
           mongoms-debug: 1
       - name: Package
         run: yarn package
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v3
+        with:
+          gpg-private-key: ${{ secrets.NEOBOT_GPG_PRIVATE_KEY }}
+          git-user-signingkey: true
+          git-commit-gpgsign: true
       - name: Commit latest build artifacts
         uses: endbug/add-and-commit@v7
         with:
