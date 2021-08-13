@@ -50,6 +50,6 @@ jobs:
       - name: Commit latest build artifacts
         uses: endbug/add-and-commit@v7
         with:
-          author_name: NeoBot
-          author_email: neomcneoface@neofinancial.com
+          author_name: ${{ secrets.NEOBOT_AUTHOR }}
+          author_email: ${{ secrets.NEOBOT_AUTHOR_EMAIL }}
           signoff: true
