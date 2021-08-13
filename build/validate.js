@@ -55,8 +55,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var core = __importStar(require("@actions/core"));
 var mongodb_1 = require("mongodb");
+var core = __importStar(require("@actions/core"));
 function runTest() {
     return __awaiter(this, void 0, void 0, function () {
         var connectionString, client, err_1;
@@ -72,7 +72,7 @@ function runTest() {
                     return [4 /*yield*/, client.connect()];
                 case 2:
                     _a.sent();
-                    console.log("Client connected: " + client.isConnected());
+                    console.log("Client connected to \"" + connectionString + "\": " + client.isConnected());
                     return [3 /*break*/, 7];
                 case 3:
                     err_1 = _a.sent();
