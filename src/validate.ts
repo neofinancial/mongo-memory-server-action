@@ -11,12 +11,12 @@ async function runTest(): Promise<void> {
   try {
     client = new MongoClient(connectionString, { useUnifiedTopology: true });
     await client.connect();
-    console.log(`Client connected to "${connectionString}": ${client.isConnected()}`);
+    console.log(`Client connected: ${client.isConnected()}`);
 
     // do work
   } catch (err) {
     core.setFailed(err.message);
-    console.error(`Error encountered opening connection to: ${connectionString}`, err);
+    console.error(`Error encountered opening connection`, err);
 
     throw err;
   } finally {

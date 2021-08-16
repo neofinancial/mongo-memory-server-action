@@ -72,12 +72,12 @@ function runTest() {
                     return [4 /*yield*/, client.connect()];
                 case 2:
                     _a.sent();
-                    console.log("Client connected to \"" + connectionString + "\": " + client.isConnected());
+                    console.log("Client connected: " + client.isConnected());
                     return [3 /*break*/, 7];
                 case 3:
                     err_1 = _a.sent();
                     core.setFailed(err_1.message);
-                    console.error("Error encountered opening connection to: " + connectionString, err_1);
+                    console.error("Error encountered opening connection", err_1);
                     throw err_1;
                 case 4:
                     if (!(client === null || client === void 0 ? void 0 : client.isConnected())) return [3 /*break*/, 6];

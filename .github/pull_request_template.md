@@ -1,13 +1,11 @@
-# **Name of Pull Request**
-
 <!--
-Please reference an issue number(s) if the PR addresses one or more issues.
+Please provide a brief summary of changes.
 -->
 
-## Description
+## Details
 
 <!--
-Please provide a summary of changes, and a list of any dependency changes.
+Please provide a more detailed description of the code changes, a list of any dependency changes, and references to any issue number(s) if the PR addresses existing issues(s).
 -->
 
 ## Additional context
