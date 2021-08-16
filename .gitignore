@@ -12,3 +12,6 @@ Thumbs.db
 
 # typedoc - for now
 docs
+
+# code-points
+code-points.mem
