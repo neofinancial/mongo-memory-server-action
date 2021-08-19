@@ -1,7 +1,11 @@
 import { MongoClient } from 'mongodb';
-import { MongoMemoryServer, MongoMemoryServerOpts } from 'mongodb-memory-server-core/lib/MongoMemoryServer';
+import {
+    MongoMemoryServer, MongoMemoryServerOpts
+} from 'mongodb-memory-server-core/lib/MongoMemoryServer';
 import { MongoBinaryOpts } from 'mongodb-memory-server-core/lib/util/MongoBinary';
-import { MongoMemoryInstanceOpts, StorageEngine } from 'mongodb-memory-server-core/lib/util/MongoInstance';
+import {
+    MongoMemoryInstanceOpts, StorageEngine
+} from 'mongodb-memory-server-core/lib/util/MongoInstance';
 
 export class MemoryServerFactory {
   public static async generateMemoryServer(

@@ -1,8 +1,7 @@
-# Specific directories (code coverage, dependencies, etc.)
+# Ignore code coverage and dependencies folders
 # NOTE: don't exclude build or it will be unavailable for the CI action
 coverage
 node_modules
-package-lock.json
 
 # Editors
 .vscode
@@ -14,5 +13,5 @@ Thumbs.db
 # typedoc - for now
 docs
 
-# most logs
-**/*.log
+# code-points
+code-points.mem

@@ -1,5 +1,6 @@
-import * as core from '@actions/core';
 import { MongoClient } from 'mongodb';
+
+import * as core from '@actions/core';
 
 async function runTest(): Promise<void> {
   console.info('Testing connectivity via MongoClient');
@@ -15,7 +16,7 @@ async function runTest(): Promise<void> {
     // do work
   } catch (err) {
     core.setFailed(err.message);
-    console.error(`Error encountered opening connection to: ${connectionString}`, err);
+    console.error(`Error encountered opening connection`, err);
 
     throw err;
   } finally {
