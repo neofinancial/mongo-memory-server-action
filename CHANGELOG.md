@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.0.0] - 2021-09-17
+## [1.0.0] - 2021-08-19
 
 - Initial release of this GitHub Action; for details see the [README](./README.md)
 
