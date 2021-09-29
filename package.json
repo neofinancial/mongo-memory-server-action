@@ -1,7 +1,7 @@
 {
   "name": "mongo-memory-server-action",
   "description": "Support MongoDB-dependent GitHub Workflows",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "repository": {
     "type": "git",
     "url": "git@github.com:neofinancial/mongo-memory-server-action.git"

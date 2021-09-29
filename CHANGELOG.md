@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.0.2] - 2021-09-29
+
+- Dependabot bumps (dependencies only)
+- Bump `mongodb-memory-server-core` and `mongodb-memory-server-global` to latest
+
 ## [1.0.1] - 2021-09-24
 
 - Dependabot bumps (dependencies only)

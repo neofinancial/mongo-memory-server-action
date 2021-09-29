@@ -16,7 +16,7 @@ Provides a CI-time MongoDB memory database using [mongodb-memory-server](https:/
 In your .github/workflows folder, add a new job step to the appropriate workflow:
 
 ```yaml
-- uses: neofinancial/mongo-memory-server-action@v1.0.1
+- uses: neofinancial/mongo-memory-server-action@v1.0.2
   with:
     db-connection-env-var: MONGODB_CONNECTION_STRING
     run-command: yarn use:database
