@@ -25,7 +25,7 @@ async function runCommand(command: string, connectionString: string): Promise<st
       stdio: 'inherit',
     });
 
-    return output ? output.toString() : 'Child process executed synchronously.';
+    return output ? output.toString() : '(Child process executed synchronously and returned null).';
   } catch (err) {
     console.error(err);
 
