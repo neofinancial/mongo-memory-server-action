@@ -19,7 +19,13 @@ async function runCommand(command: string, connectionString: string): Promise<st
   }
 
   try {
-    return execSync(command, { env: process.env, cwd: process.env.githubRepository, stdio: 'inherit' }).toString();
+    const output = execSync(command, {
+      env: process.env,
+      cwd: process.env.githubRepository,
+      stdio: 'inherit',
+    });
+
+    return output ? output.toString() : 'Child process executed synchronously.';
   } catch (err) {
     console.error(err);
 
