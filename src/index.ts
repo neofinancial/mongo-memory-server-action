@@ -7,7 +7,7 @@ import * as core from '@actions/core';
 import { MemoryServerFactory } from './factory/memory-server-factory';
 
 async function runCommand(command: string, connectionString: string): Promise<string> {
-  console.info(`Executing the target script: "${command}"`);
+  console.info(`--- Executing the target script: "${command}"`);
 
   const connectionStringEnvVar = core.getInput('db-connection-env-var');
   const mongoMsDebug = core.getInput('mongoms-debug');
@@ -25,7 +25,7 @@ async function runCommand(command: string, connectionString: string): Promise<st
       stdio: 'inherit',
     });
 
-    return output ? output.toString() : '(Child process executed synchronously and returned null).';
+    return output ? output.toString() : '--- Child process executed synchronously and returned null.';
   } catch (err) {
     console.error(err);
 

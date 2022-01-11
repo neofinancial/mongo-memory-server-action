@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.0] - 2022-01-11
+
+- Upgrade action to run using `node16`
+- Change sub-process to inherit its stdio from the parent process to improve sub-process feedback
+
 ## [1.0.2] - 2021-09-29
 
 - Dependabot bumps (dependencies only)
