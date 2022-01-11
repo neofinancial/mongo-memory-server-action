@@ -19,7 +19,7 @@ async function runCommand(command: string, connectionString: string): Promise<st
   }
 
   try {
-    return execSync(command, { env: process.env, cwd: process.env.githubRepository }).toString();
+    return execSync(command, { env: process.env, cwd: process.env.githubRepository, stdio: 'inherit' }).toString();
   } catch (err) {
     console.error(err);
 
