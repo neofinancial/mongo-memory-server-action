@@ -3,6 +3,7 @@
 [![Build status](https://github.com/neofinancial/mongo-memory-server-action/workflows/ci/badge.svg)](https://github.com/neofinancial/mongo-memory-server-action/actions)
 [![Test status](https://github.com/neofinancial/mongo-memory-server-action/workflows/pull-request/badge.svg)](https://github.com/neofinancial/mongo-memory-server-action/actions)
 [![Publish status](https://github.com/neofinancial/mongo-memory-server-action/workflows/publish/badge.svg)](https://github.com/neofinancial/mongo-memory-server-action/actions)
+[![coverage](https://coverage.neotools.ca/api/badge/master/4EUt9DTZZpn3u1KfBtNpjn)](https://coverage.neotools.ca/coverage/neofinancial/mongo-memory-server-action)
 
 Provides a CI-time MongoDB memory database using [mongodb-memory-server](https://github.com/nodkz/mongodb-memory-server), sets your specified environment variable to the new server's connection string, and executes your specified script. Created to support CI-time testing of:
 
