@@ -53,3 +53,10 @@ jobs:
           author_name: ${{ secrets.NEOBOT_AUTHOR }}
           author_email: ${{ secrets.NEOBOT_AUTHOR_EMAIL }}
           signoff: true
+      - name: Coverage
+        uses: neofinancial/coverage-upload-action@v1
+        with:
+          coverageEndpoint: ${{ secrets.COVERAGE_ENDPOINT }}
+          coverageToken: ${{secrets.COVERAGE_TOKEN}}
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
