@@ -1,6 +1,7 @@
 # mongo-memory-server-action
 
 [![Build status](https://github.com/neofinancial/mongo-memory-server-action/workflows/ci/badge.svg)](https://github.com/neofinancial/mongo-memory-server-action/actions)
+[![coverage](https://coverage.neotools.ca/api/badge/master/4EUt9DTZZpn3u1KfBtNpjn)](https://coverage.neotools.ca/coverage/neofinancial/mongo-memory-server-action)
 [![Test status](https://github.com/neofinancial/mongo-memory-server-action/workflows/pull-request/badge.svg)](https://github.com/neofinancial/mongo-memory-server-action/actions)
 [![Publish status](https://github.com/neofinancial/mongo-memory-server-action/workflows/publish/badge.svg)](https://github.com/neofinancial/mongo-memory-server-action/actions)
 
@@ -20,7 +21,7 @@ In your .github/workflows folder, add a new job step to the appropriate workflow
   with:
     db-connection-env-var: MONGODB_CONNECTION_STRING
     run-command: yarn use:database
-    binary-version: 4.0.9
+    binary-version: 4.4.6
     instance-dbName: validation
     instance-port: 27017
     instance-storageEngine: wiredTiger
