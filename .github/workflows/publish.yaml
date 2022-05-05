@@ -8,10 +8,39 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v2
-      - uses: Saionaro/extract-package-version@v1.1.1
+      - uses: Saionaro/extract-package-version@de8268c348d3a9ed3514c86a9ad8d4568ab8b49e
         id: extract_version
-      - uses: mathieudutour/github-tag-action@v5.5
+      - uses: mathieudutour/github-tag-action@d745f2e74aaf1ee82e747b181f7a0967978abee0
         id: tag_version
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.extract_version.outputs.version }}
+  coverage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 14
+      - name: Get yarn cache
+        id: yarn-cache
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+      - name: Cache node modules
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.yarn-cache.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install
+        run: yarn --prefer-offline --frozen-lockfile --no-progress --non-interactive
+      - name: Test
+        run: yarn test
+      - name: Coverage
+        uses: neofinancial/coverage-upload-action@0ffd2ee97816db805bdedcca37bcac50b9521f37
+        with:
+          coverageEndpoint: ${{ secrets.COVERAGE_ENDPOINT }}
+          coverageToken: ${{secrets.COVERAGE_TOKEN}}
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}

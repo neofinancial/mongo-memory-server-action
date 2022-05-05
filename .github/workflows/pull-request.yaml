@@ -42,21 +42,14 @@ jobs:
       - name: Package
         run: yarn package
       - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v3
+        uses: crazy-max/ghaction-import-gpg@e00cb83a68c1158b29afc5217dd0582cada6d172
         with:
-          gpg-private-key: ${{ secrets.NEOBOT_GPG_PRIVATE_KEY }}
-          git-user-signingkey: true
-          git-commit-gpgsign: true
+          gpg_private_key: ${{ secrets.NEOBOT_GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
       - name: Commit latest build artifacts
         uses: endbug/add-and-commit@v7
         with:
           author_name: ${{ secrets.NEOBOT_AUTHOR }}
           author_email: ${{ secrets.NEOBOT_AUTHOR_EMAIL }}
           signoff: true
-      - name: Coverage
-        uses: neofinancial/coverage-upload-action@v1
-        with:
-          coverageEndpoint: ${{ secrets.COVERAGE_ENDPOINT }}
-          coverageToken: ${{secrets.COVERAGE_TOKEN}}
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
