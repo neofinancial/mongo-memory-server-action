@@ -38,7 +38,7 @@ jobs:
       - name: Test
         run: yarn test
       - name: Coverage
-        uses: neofinancial/coverage-upload-action@0ffd2ee97816db805bdedcca37bcac50b9521f37
+        uses: neofinancial/coverage-upload-action@75f3365d8b746c0f3bb5c0fb83737a9150cf956d
         with:
           coverageEndpoint: ${{ secrets.COVERAGE_ENDPOINT }}
           coverageToken: ${{secrets.COVERAGE_TOKEN}}
