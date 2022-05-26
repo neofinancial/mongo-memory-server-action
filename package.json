@@ -1,7 +1,7 @@
 {
   "name": "mongo-memory-server-action",
   "description": "Support MongoDB-dependent GitHub Workflows",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "repository": {
     "type": "git",
     "url": "git@github.com:neofinancial/mongo-memory-server-action.git"
@@ -36,8 +36,8 @@
     "eslint-config-neo": "^0.6.2",
     "jest": "^27.0.6",
     "mongodb": "^3.6.9",
-    "mongodb-memory-server-core": "^7.1.0",
-    "mongodb-memory-server-global": "^7.0.0",
+    "mongodb-memory-server-core": "^8.6.0",
+    "mongodb-memory-server-global": "^8.6.0",
     "prettier": "^2.3.2",
     "ts-jest": "^27.0.3",
     "ts-node": "^10.0.0",

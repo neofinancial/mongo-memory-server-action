@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.1.0] - 2022-05-26
+
+- Upgrade mongo-memory-server version to ^8.6.0
+
+
 ## [1.1.0] - 2022-01-11
 
 - Upgrade action to run using `node16`
