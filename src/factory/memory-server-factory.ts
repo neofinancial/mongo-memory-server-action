@@ -49,7 +49,7 @@ export class MemoryServerFactory {
     try {
       const memoryServerUri = server.getUri();
 
-      client = new MongoClient(memoryServerUri, { useUnifiedTopology: true, useNewUrlParser: true });
+      client = new MongoClient(memoryServerUri, { useUnifiedTopology: true, useNewUrlParser: true, maxPoolSize: 50 });
 
       await client.connect();
 
