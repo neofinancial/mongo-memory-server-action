@@ -1,6 +1,10 @@
 # Changelog
 
-## [1.1.0] - 2022-05-26
+## [1.2.1] - 2022-05-26
+
+- Add max-pool-size parameter option
+
+## [1.2.0] - 2022-05-26
 
 - Upgrade mongo-memory-server version to ^8.6.0
 
