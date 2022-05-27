@@ -1,6 +1,6 @@
 # Changelog
 
-## [1.2.1] - 2022-05-26
+## [1.2.1] - 2022-05-27
 
 - Add max-pool-size parameter option
 
