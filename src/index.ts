@@ -41,10 +41,12 @@ async function run(): Promise<void> {
     const port: number = Number.parseInt(core.getInput('instance-port'));
     const storageEngine = core.getInput('instance-storageEngine');
     const version = core.getInput('binary-version');
+    const maxPoolInput = core.getInput('max-pool-size');
+    const maxPoolSize =  maxPoolInput ? Number.parseInt(maxPoolInput) : undefined;
 
     mongodb = await MemoryServerFactory.generateMemoryServer(dbName, port, storageEngine, version);
 
-    const connectionString = await MemoryServerFactory.verifyMemoryServer(mongodb);
+    const connectionString = await MemoryServerFactory.verifyMemoryServer(mongodb, maxPoolSize);
     const command = core.getInput('run-command');
 
     const stdOut = await runCommand(command, connectionString);

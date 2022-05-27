@@ -74,31 +74,34 @@ var MemoryServerFactory = /** @class */ (function () {
             });
         });
     };
-    MemoryServerFactory.verifyMemoryServer = function (server) {
+    MemoryServerFactory.verifyMemoryServer = function (server, maxPool) {
         return __awaiter(this, void 0, void 0, function () {
-            var client, memoryServerUri, err_1;
+            var client, maxPoolSize, memoryServerUri, err_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, 3, 6]);
-                        memoryServerUri = server.getUri();
-                        client = new mongodb_1.MongoClient(memoryServerUri, { useUnifiedTopology: true, useNewUrlParser: true });
-                        return [4 /*yield*/, client.connect()];
+                        maxPoolSize = maxPool || 10;
+                        _a.label = 1;
                     case 1:
+                        _a.trys.push([1, 3, 4, 7]);
+                        memoryServerUri = server.getUri();
+                        client = new mongodb_1.MongoClient(memoryServerUri, { useUnifiedTopology: true, useNewUrlParser: true, maxPoolSize: maxPoolSize });
+                        return [4 /*yield*/, client.connect()];
+                    case 2:
                         _a.sent();
                         return [2 /*return*/, memoryServerUri];
-                    case 2:
+                    case 3:
                         err_1 = _a.sent();
                         console.error(err_1);
                         throw err_1;
-                    case 3:
-                        if (!(client === null || client === void 0 ? void 0 : client.isConnected())) return [3 /*break*/, 5];
-                        return [4 /*yield*/, client.close()];
                     case 4:
+                        if (!(client === null || client === void 0 ? void 0 : client.isConnected())) return [3 /*break*/, 6];
+                        return [4 /*yield*/, client.close()];
+                    case 5:
                         _a.sent();
-                        _a.label = 5;
-                    case 5: return [7 /*endfinally*/];
-                    case 6: return [2 /*return*/];
+                        _a.label = 6;
+                    case 6: return [7 /*endfinally*/];
+                    case 7: return [2 /*return*/];
                 }
             });
         });

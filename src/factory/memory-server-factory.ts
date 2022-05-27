@@ -43,13 +43,14 @@ export class MemoryServerFactory {
     return server;
   }
 
-  public static async verifyMemoryServer(server: MongoMemoryServer): Promise<string> {
+  public static async verifyMemoryServer(server: MongoMemoryServer, maxPool?: number): Promise<string> {
     let client: MongoClient | undefined;
+    const maxPoolSize = maxPool || 10;
 
     try {
       const memoryServerUri = server.getUri();
 
-      client = new MongoClient(memoryServerUri, { useUnifiedTopology: true, useNewUrlParser: true });
+      client = new MongoClient(memoryServerUri, { useUnifiedTopology: true, useNewUrlParser: true, maxPoolSize });
 
       await client.connect();
 

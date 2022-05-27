@@ -28,6 +28,10 @@ inputs:
     description: |
       Enables a Debug mode for the in-memory storage MongoDB instance (any value supplied will be taken as 'true').
     required: false
+  max-pool-size: 
+    description: |
+      Sets the max pool size for mongo
+    required: false
 runs:
   using: 'node16'
   main: 'build/index.js'
