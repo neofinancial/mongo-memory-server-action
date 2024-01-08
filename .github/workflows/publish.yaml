@@ -4,10 +4,10 @@ on:
     branches: [master, main]
 jobs:
   tag:
-    runs-on: ubuntu-latest
+    runs-on: neo-x86-medium
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: Saionaro/extract-package-version@de8268c348d3a9ed3514c86a9ad8d4568ab8b49e
         id: extract_version
       - uses: mathieudutour/github-tag-action@d745f2e74aaf1ee82e747b181f7a0967978abee0
@@ -16,18 +16,18 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           custom_tag: ${{ steps.extract_version.outputs.version }}
   coverage:
-    runs-on: ubuntu-latest
+    runs-on: neo-x86-medium
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: 14
       - name: Get yarn cache
         id: yarn-cache
         run: echo "::set-output name=dir::$(yarn cache dir)"
       - name: Cache node modules
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ${{ steps.yarn-cache.outputs.dir }}
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
