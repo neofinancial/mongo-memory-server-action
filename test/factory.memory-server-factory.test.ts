@@ -90,7 +90,7 @@ describe('MemoryServerFactory', () => {
         expectedVersion
       );
 
-      await expect(promise).rejects.toThrow(`options.port should be >= 0 and < 65536. Received ${badPort}.`);
+      await expect(promise).rejects.toThrow(`options.port should be >= 0 and < 65536. Received type number (${badPort}).`);
     });
 
     test('unfortunately does NOT throw an error when provided a dbName that is too long', async () => {
