@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.2] - 2024-07-02
+
+- Update a number of packages to address critical and high vulnerabilities.
+
 ## [1.2.1] - 2022-05-27
 
 - Add max-pool-size parameter option
