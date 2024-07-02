@@ -4,6 +4,7 @@ coverage
 node_modules
 
 # Editors
+.idea
 .vscode
 
 # OS metadata
