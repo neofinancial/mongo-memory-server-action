@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.2] - 2024-07-02
+
+- Ran `yarn-audit-fix` to fix a number of vulnerabilities.
+
 ## [1.2.1] - 2022-05-27
 
 - Add max-pool-size parameter option
