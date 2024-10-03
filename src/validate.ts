@@ -15,7 +15,7 @@ async function runTest(): Promise<void> {
 
     // do work
   } catch (err) {
-    core.setFailed(err.message);
+    core.setFailed((err as Error).message);
     console.error(`Error encountered opening connection`, err);
 
     throw err;
