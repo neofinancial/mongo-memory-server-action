@@ -53,7 +53,7 @@ async function run(): Promise<void> {
 
     console.info(stdOut);
   } catch (err) {
-    core.setFailed(err.message);
+    core.setFailed((err as Error).message);
   } finally {
     if (mongodb?.state === MongoMemoryServerStates.running) {
       await mongodb.stop();

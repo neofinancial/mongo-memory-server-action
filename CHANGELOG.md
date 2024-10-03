@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.3] - 2024-10-03
+
+- Update the `typedoc` package to address a high severity vulnerability.
+
 ## [1.2.2] - 2024-07-02
 
 - Update a number of packages to address critical and high vulnerabilities.

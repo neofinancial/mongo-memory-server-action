@@ -1,7 +1,11 @@
 "use strict";
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
 }) : (function(o, m, k, k2) {
     if (k2 === undefined) k2 = k;
     o[k2] = m[k];
@@ -72,7 +76,7 @@ function runTest() {
                     return [4 /*yield*/, client.connect()];
                 case 2:
                     _a.sent();
-                    console.log("Client connected: " + client.isConnected());
+                    console.log("Client connected: ".concat(client.isConnected()));
                     return [3 /*break*/, 7];
                 case 3:
                     err_1 = _a.sent();
@@ -84,7 +88,7 @@ function runTest() {
                     return [4 /*yield*/, client.close()];
                 case 5:
                     _a.sent();
-                    console.log("Client disconnected: " + !client.isConnected());
+                    console.log("Client disconnected: ".concat(!client.isConnected()));
                     _a.label = 6;
                 case 6: return [7 /*endfinally*/];
                 case 7: return [2 /*return*/];
