@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.2.4] - 2024-12-13
+
+- Bumped references of `actions/cache@v2` to `actions/cache@v4` to address GitHub closing `actions/cache@v2`.
+
 ## [1.2.3] - 2024-10-03
 
 - Update the `typedoc` package to address a high severity vulnerability.
