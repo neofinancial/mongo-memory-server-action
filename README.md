@@ -21,7 +21,7 @@ In your .github/workflows folder, add a new job step to the appropriate workflow
   with:
     db-connection-env-var: MONGODB_CONNECTION_STRING
     run-command: yarn use:database
-    binary-version: 4.4.6
+    binary-version: 6.0.15
     instance-dbName: validation
     instance-port: 27017
     instance-storageEngine: wiredTiger
