@@ -50,6 +50,7 @@ var MemoryServerFactory = /** @class */ (function () {
                     case 0:
                         instanceOpts = {};
                         binaryOpts = { checkMD5: true };
+                        console.log('forcing a code change...');
                         if (dbName) {
                             instanceOpts.dbName = dbName;
                         }
