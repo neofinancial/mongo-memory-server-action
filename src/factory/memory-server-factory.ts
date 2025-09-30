@@ -17,6 +17,8 @@ export class MemoryServerFactory {
     const instanceOpts: MongoMemoryInstanceOpts = {};
     const binaryOpts: MongoBinaryOpts = { checkMD5: true };
 
+    console.log('forcing a code change...')
+
     if (dbName) {
       instanceOpts.dbName = dbName;
     }
