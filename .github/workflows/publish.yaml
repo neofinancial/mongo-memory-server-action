@@ -1,7 +1,7 @@
 name: publish
 on:
   push:
-    branches: [master, main, enginfs-545300/move-actions]
+    branches: [master, main]
 permissions:
   contents: write
 jobs:
