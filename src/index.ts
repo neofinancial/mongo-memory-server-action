@@ -18,6 +18,8 @@ async function runCommand(command: string, connectionString: string): Promise<st
     process.env['MONGOMS_DEBUG'] = '1';
   }
 
+  console.log('forcing a release 4...')
+
   try {
     const output = execSync(command, {
       env: process.env,
