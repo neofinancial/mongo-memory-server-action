@@ -49,6 +49,7 @@ The memory-server is stopped (and destroyed) subsequent to the completion of thi
 ### Testing
 
 This repository's CI workflow has a 'validate' job @ `src/validate.ts` (technically, `build/validate.js`) for internal, CI-time testing of the action's functionality; this simply opens and closes a connection to the memory-server to ensure the validity of the provided ENV variable. There are also a small number of unit tests to ensure the memory-server's configuration values are passed to the memory-server appropriately.
+If you're looking to reference this action before it's released, make sure to build it and commit the output manually. This step is automatic once the PR is merged to `master`.
 
 - please try to cover the new capability when making small changes
 - as necessary, add validation for variables passed directly to the initialization of the memory-server
