@@ -1,7 +1,9 @@
 name: publish
 on:
   push:
-    branches: [master, main]
+    branches: [master, main, enginfs-545300/move-actions]
+permissions:
+  contents: write
 jobs:
   publish:
     runs-on: ubuntu-22.04
